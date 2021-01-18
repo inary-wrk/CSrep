@@ -17,7 +17,7 @@ namespace lesson1_app1
 
             }
 
-            Console.WriteLine($"Hello, {userName}, today {dateToday.ToString("d")}");
+            Console.WriteLine($"Hello, {userName}, today is {dateToday.ToString("d")}");
 
             Console.ReadLine();
         }
