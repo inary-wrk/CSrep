@@ -6,18 +6,16 @@ namespace lesson1_app1
     {
         static void Main(string[] args)
         {
-            string userName;
-            DateTime dateToday = DateTime.Today;
-            userName = Console.ReadLine();
+            Console.Write("Please enter your name: ");
+            string userName = Console.ReadLine();
 
             while (String.IsNullOrEmpty(userName))
             {
-                Console.WriteLine("epmty name");
+                Console.Write($"Name field can't be empty, please re-enter name: ");
                 userName = Console.ReadLine();
-
             }
 
-            Console.WriteLine($"Hello, {userName}, today is {dateToday.ToString("d")}");
+            Console.WriteLine($"\nHello, {userName}, today is {DateTime.Today.ToString("d")}.");
 
             Console.ReadLine();
         }
