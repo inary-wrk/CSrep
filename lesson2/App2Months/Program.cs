@@ -1,22 +1,10 @@
 ﻿using System;
 namespace App2Months
 {
-    class Program
+    class Months
     {
-        static void Main(string[] args)
+        public void monthByNumber(byte byteMonthNumber)
         {
-            Console.Write("Please enter the number of the month: ");
-            string monthNumber = Console.ReadLine();
-            byte byteMonthNumber;
-
-
-            while ((Byte.TryParse(monthNumber, out byteMonthNumber) == false) || byteMonthNumber > 12 || byteMonthNumber < 1)
-            {
-                Console.Write("The number of the month must be an integer, greater than 0, less than 13, please re - enter: ");
-                monthNumber = Console.ReadLine();
-
-            }
-
             switch (byteMonthNumber)
             {
                 case 1:
@@ -55,11 +43,34 @@ namespace App2Months
                 case 12:
                     Console.WriteLine("It's December");
                     break;
-                
+
 
             }
-            
-            
+        }
+
+
+        public byte monthCorrectInput(string number)
+        {
+            byte byteMonthNumber;
+            while ((Byte.TryParse(number, out byteMonthNumber) == false) || byteMonthNumber > 12 || byteMonthNumber < 1)
+            {
+                Console.Write("The number of the month must be an integer, greater than 0, less than 13, please re - enter: ");
+                number = Console.ReadLine();
+
+            }
+            return byteMonthNumber;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Months months = new Months();
+
+            Console.Write("Please enter the number of the month: ");
+            byte byteMonthNumber = months.monthCorrectInput(Console.ReadLine());
+            months.monthByNumber(byteMonthNumber);
+
             Console.ReadLine();
         }
     }
