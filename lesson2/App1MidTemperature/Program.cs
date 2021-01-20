@@ -5,7 +5,7 @@ namespace App1MidTemperature
     public class TemperatureMaxMinAvrg
     {
 
-        public int intCheck_ReEnter(string temperature)
+        public int intCorrectInputCheck(string temperature)
         {
             int number;
             while (Int32.TryParse(temperature, out number) == false)
@@ -30,14 +30,12 @@ namespace App1MidTemperature
         static void Main(string[] AvrgTemperature)
         {
             TemperatureMaxMinAvrg temperatureCheck_Average = new TemperatureMaxMinAvrg();
-            
+
             Console.Write("Enter the maximum temperature for the day: ");
-            string maxTemperature = Console.ReadLine();
-            int intMaxT = temperatureCheck_Average.intCheck_ReEnter(maxTemperature);
-            
+            int intMaxT = temperatureCheck_Average.intCorrectInputCheck(Console.ReadLine());
+
             Console.Write("Enter the minimum temperature for the day: ");
-            string minTemperature = Console.ReadLine();
-            int intMinT = temperatureCheck_Average.intCheck_ReEnter(minTemperature);
+            int intMinT = temperatureCheck_Average.intCorrectInputCheck(Console.ReadLine());
 
 
             Console.WriteLine($"Average temperature for the day: {temperatureCheck_Average.averageTemperature(intMaxT, intMinT)}");
