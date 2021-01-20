@@ -16,9 +16,9 @@ namespace App1MidTemperature
             return number;
         }
 
-        public int averageTemperature(int minTemperature, int maxTemperature)
+        public void averageTemperature(int minTemperature, int maxTemperature)
         {
-            return (minTemperature + maxTemperature) / 2;
+            Console.WriteLine($"Average temperature for the day: {(minTemperature + maxTemperature) / 2}");
         }
 
 
@@ -30,15 +30,13 @@ namespace App1MidTemperature
         static void Main(string[] AvrgTemperature)
         {
             TemperatureMaxMinAvrg temperatureCheck_Average = new TemperatureMaxMinAvrg();
-
             Console.Write("Enter the maximum temperature for the day: ");
             int intMaxT = temperatureCheck_Average.intCorrectInputCheck(Console.ReadLine());
 
             Console.Write("Enter the minimum temperature for the day: ");
             int intMinT = temperatureCheck_Average.intCorrectInputCheck(Console.ReadLine());
 
-
-            Console.WriteLine($"Average temperature for the day: {temperatureCheck_Average.averageTemperature(intMaxT, intMinT)}");
+            temperatureCheck_Average.averageTemperature(intMinT, intMaxT);
 
             Console.ReadLine();
 
