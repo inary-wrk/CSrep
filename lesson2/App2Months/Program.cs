@@ -3,7 +3,7 @@ namespace App2Months
 {
     class Months
     {
-        public void monthByNumber(byte byteMonthNumber)
+        public void MonthByNumber(byte byteMonthNumber)
         {
             switch (byteMonthNumber)
             {
@@ -49,7 +49,7 @@ namespace App2Months
         }
 
 
-        public byte monthCorrectInput(string number)
+        public byte MonthCorrectInput(string number)
         {
             byte byteMonthNumber;
             while ((Byte.TryParse(number, out byteMonthNumber) == false) || byteMonthNumber > 12 || byteMonthNumber < 1)
@@ -68,8 +68,8 @@ namespace App2Months
             Months months = new Months();
 
             Console.Write("Please enter the number of the month: ");
-            byte byteMonthNumber = months.monthCorrectInput(Console.ReadLine());
-            months.monthByNumber(byteMonthNumber);
+            byte byteMonthNumber = months.MonthCorrectInput(Console.ReadLine());
+            months.MonthByNumber(byteMonthNumber);
 
             Console.ReadLine();
         }
