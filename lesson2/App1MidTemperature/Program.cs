@@ -29,14 +29,14 @@ namespace App1MidTemperature
 
         static void Main(string[] AvrgTemperature)
         {
-            TemperatureMaxMinAvrg temperatureCheck_Average = new TemperatureMaxMinAvrg();
+            TemperatureMaxMinAvrg temperature = new TemperatureMaxMinAvrg();
             Console.Write("Enter the maximum temperature for the day: ");
-            int intMaxT = temperatureCheck_Average.IntCorrectInputCheck(Console.ReadLine());
+            int intMaxT = temperature.IntCorrectInputCheck(Console.ReadLine());
 
             Console.Write("Enter the minimum temperature for the day: ");
-            int intMinT = temperatureCheck_Average.IntCorrectInputCheck(Console.ReadLine());
+            int intMinT = temperature.IntCorrectInputCheck(Console.ReadLine());
 
-            temperatureCheck_Average.AverageTemperature(intMinT, intMaxT);
+            temperature.AverageTemperature(intMinT, intMaxT);
 
             Console.ReadLine();
 
