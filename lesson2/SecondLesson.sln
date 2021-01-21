@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App2Months", "App2Months\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App3Even", "App3Even\App3Even.csproj", "{82656291-EF6E-4B08-A318-6C97A71A9DDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App4CashierCheck", "App4CashierCheck\App4CashierCheck.csproj", "{8E43BDCC-56CC-4F77-8556-2E45AD90EF29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{82656291-EF6E-4B08-A318-6C97A71A9DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82656291-EF6E-4B08-A318-6C97A71A9DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82656291-EF6E-4B08-A318-6C97A71A9DDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E43BDCC-56CC-4F77-8556-2E45AD90EF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E43BDCC-56CC-4F77-8556-2E45AD90EF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E43BDCC-56CC-4F77-8556-2E45AD90EF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E43BDCC-56CC-4F77-8556-2E45AD90EF29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
