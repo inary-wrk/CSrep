@@ -1,4 +1,5 @@
 ﻿using System;
+using App4CashierCheck.Classes;
 
 namespace App4CashierCheck
 {
@@ -7,6 +8,7 @@ namespace App4CashierCheck
     {
         static void Main(string[] args)
         {
+            checkNum1 = new Check(Check.GetCheckNum(), ) ;
            
         }
     }
