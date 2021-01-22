@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3F82E3F3-C9C4-436B-AAD6-3B9797E70175}</ProjectGuid>
+    <ProjectGuid>{10FC4F97-4213-44BC-9C03-38D68A8700E6}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>App1MidTemperature</RootNamespace>
-    <AssemblyName>App1MidTemperature</AssemblyName>
+    <RootNamespace>App1Temp2Month5Rainy</RootNamespace>
+    <AssemblyName>App1Temp2Month5Rainy</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Months.cs" />
+    <Compile Include="Classes\Temperature.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

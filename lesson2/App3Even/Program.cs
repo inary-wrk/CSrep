@@ -1,4 +1,5 @@
-﻿using System;
+﻿// 3.Определить, является ли введённое пользователем число чётным.
+using System;
 
 namespace App3Even
 {
@@ -8,35 +9,25 @@ namespace App3Even
         {
             Console.Write("Parity check, please enter the number: ");
             var number = Console.ReadLine();
-            int intNumber;
+            long longNumber;
 
-            while (Int32.TryParse(number, out intNumber) == false)
+            while (long.TryParse(number, out longNumber) == false)
             {
                 Console.Write("The number must be an integer, please re-enter: ");
                 number = Console.ReadLine();
             }
 
-            if (intNumber % 2 == 1)
-
-            {
+            if (longNumber % 2 == 1)
                 Console.WriteLine("The number {0} is not even. Method - remainder of division by 2.", number);
-
-            }
             else
-            {
                 Console.WriteLine("The number {0} is even. Method - remainder of division by 2.", number);
-            }
 
-            if ((intNumber & 1) == 1)
 
-            {
+            if ((longNumber & 1) == 1)
                 Console.WriteLine("The number {0} is not even. Method - bitwise multiplication.", number);
 
-            }
             else
-            {
                 Console.WriteLine("The number {0} is even. Method - bitwise multiplication.", number);
-            }
 
             Console.ReadLine();
         }

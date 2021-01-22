@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B31D5878-DC9B-4792-B22E-CCD0FA345B05}</ProjectGuid>
+    <ProjectGuid>{DF2054E9-39AA-434D-9D35-737F29A576E2}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>App5RainyWinter</RootNamespace>
-    <AssemblyName>App5RainyWinter</AssemblyName>
+    <RootNamespace>App6MaskBit</RootNamespace>
+    <AssemblyName>App6MaskBit</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,17 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DaysOfWeek.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\App2Months\App2Months.csproj">
-      <Project>{3238de69-72fd-4ec0-ae1f-48e0b9f8cffc}</Project>
-      <Name>App2Months</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

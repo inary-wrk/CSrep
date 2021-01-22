@@ -1,11 +1,14 @@
 ﻿using System;
-namespace App2Months
+
+namespace App1Temp2Month5Rainy.Classes
 {
     public class Months
     {
-        public static string stringMonth;
+        public string stringMonth;
+                 
         public string MonthByNumber(byte byteMonthNumber)
         {
+
             switch (byteMonthNumber)
             {
                 case 1: stringMonth = "January"; break;
@@ -35,19 +38,6 @@ namespace App2Months
 
             }
             return byteMonthNumber;
-        }
-    }
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Months months = new Months();
-
-            Console.Write("Please enter the number of the month: ");
-            byte byteMonthNumber = months.MonthCorrectInput(Console.ReadLine());
-
-            Console.WriteLine("It's {0}", months.MonthByNumber(byteMonthNumber));
-            Console.ReadLine();
         }
     }
 }
