@@ -46,7 +46,7 @@
     <Compile Include="Classes\Check.cs" />
     <Compile Include="Classes\MagazineData\LegalData.cs" />
     <Compile Include="Classes\MagazineData\Magazine.cs" />
-    <Compile Include="Classes\Positions.cs" />
+    <Compile Include="Classes\Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

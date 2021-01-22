@@ -8,11 +8,32 @@ namespace App4CashierCheck.Classes
         public string cashier;
         public LegalData data;
 
-        public Magazine(string name, string cashier, LegalData data)
+        public Magazine()
         {
-            this.name = name;
-            this.cashier = cashier;
-            this.data = data;
+            name = SetMagazineName();
+            cashier = SetCahierName();
+            data = SetLegalData();
+        }
+
+        public string SetMagazineName()
+        {
+            Console.Write("Enter magazine Name: ");
+            string name = Console.ReadLine();
+            return name;
+        }
+
+        public string SetCahierName()
+        {
+            Console.Write("Enter chaier Name: ");
+            string name = Console.ReadLine();
+            return name;
+        }
+
+        public LegalData SetLegalData()
+        {
+            var data = new LegalData();
+
+            return data;
         }
     }
 }

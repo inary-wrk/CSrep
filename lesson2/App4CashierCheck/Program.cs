@@ -8,8 +8,11 @@ namespace App4CashierCheck
     {
         static void Main(string[] args)
         {
-            checkNum1 = new Check(Check.GetCheckNum(), ) ;
-           
+            var a =@Console.ReadLine();
+            @Console.WriteLine(a);
+         
+            
+            Console.ReadLine();
         }
     }
 }
