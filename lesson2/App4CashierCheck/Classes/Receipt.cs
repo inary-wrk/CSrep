@@ -57,9 +57,7 @@ namespace App4CashierCheck.Classes
         {
             decimal _totalPrice = 0;
             foreach (Product item in products)
-            {
                 _totalPrice += (item.quantity * item.price);
-            }
             return _totalPrice;
         }
 
