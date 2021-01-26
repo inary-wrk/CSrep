@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App1ArrayDiagonally", "App1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App2Phonebook", "App2Phonebook\App2Phonebook.csproj", "{EE0F74EE-C39B-4F6D-BE4B-8C53FF9297BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App3StringReverse", "App3StringReverse\App3StringReverse.csproj", "{C3367FAC-52A4-4203-9A73-98AEB71378C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EE0F74EE-C39B-4F6D-BE4B-8C53FF9297BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE0F74EE-C39B-4F6D-BE4B-8C53FF9297BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE0F74EE-C39B-4F6D-BE4B-8C53FF9297BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3367FAC-52A4-4203-9A73-98AEB71378C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3367FAC-52A4-4203-9A73-98AEB71378C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3367FAC-52A4-4203-9A73-98AEB71378C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3367FAC-52A4-4203-9A73-98AEB71378C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
