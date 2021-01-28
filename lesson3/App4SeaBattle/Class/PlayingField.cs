@@ -42,7 +42,9 @@ namespace App4SeaBattle.Class
             {
                 for (int j = 1; j < y; j++)
                 {
-                    Console.SetCursorPosition(i, j);
+                    int b = 0;
+                    if (fieldShips[i / 3, j].Length > 2) b = 1;
+                    Console.SetCursorPosition(i - b, j);
                     Console.Write(fieldShips[i / 3, j]);
                     Console.SetCursorPosition(i + 40, j);
                     Console.Write(fieldShots[i / 3, j]);
