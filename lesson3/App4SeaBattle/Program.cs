@@ -1,4 +1,6 @@
-﻿using System;
+﻿// «Морской бой»
+// хочу написать полноценный морской бой с возможностью игры против компьютера, пока что доделал случайное размещение кораблей.
+using System;
 using App4SeaBattle.Class;
 namespace App4SeaBattle
 {
@@ -26,6 +28,7 @@ namespace App4SeaBattle
             Ships.SetShips(field.player1FieldShips, 1);
             Ships.SetShips(field.player1FieldShips, 1);
             Ships.SetShips(field.player1FieldShips, 1);
+            field.GetPlayingFieldShots(field.player1FieldShots);
             //PlayingField.GetPlayingFieldShips(field.player1FieldShips);
             Console.ReadLine();
         }

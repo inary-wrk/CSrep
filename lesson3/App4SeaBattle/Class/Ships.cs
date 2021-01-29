@@ -14,9 +14,9 @@ namespace App4SeaBattle.Class
             int z; // 0 - vertical; 1 - horizontal;
             do
             {
-                x = rnd.Next(1, 10);
-                y = rnd.Next(1, 10);
-                z = rnd.Next(0, 1);
+                x = rnd.Next(1, 11);
+                y = rnd.Next(1, 11);
+                z = rnd.Next(0, 2);
                 //x = Convert.ToInt32(Console.ReadLine());
                 //y = Convert.ToInt32(Console.ReadLine());
                 if (((z == 0) && (y + deck > 11)) || ((z == 1) && (x - deck < 1))) continue;

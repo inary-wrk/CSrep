@@ -71,7 +71,13 @@ namespace App4SeaBattle.Class
                     int b = 0;
                     if (fieldShips[i / 3, j].Length > 2) b = 1;
                     Console.SetCursorPosition(i - b, j);
-                    Console.Write(fieldShips[i / 3, j]);
+                    if (fieldShips[i / 3, j] != water)
+                    {
+                      Console.ForegroundColor = ConsoleColor.Gray;
+                      Console.Write(fieldShips[i / 3, j]);
+                      Console.ForegroundColor = ConsoleColor.Blue;
+                    }
+                    else Console.Write(fieldShips[i / 3, j]);
                 }
             }
             Console.ForegroundColor = ConsoleColor.Green;
