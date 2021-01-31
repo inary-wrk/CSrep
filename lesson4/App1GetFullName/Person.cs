@@ -13,7 +13,7 @@ namespace App1GetFullName
             get => name;
             set
             {
-                if (String.IsNullOrWhiteSpace(value)) name = "";
+                if (String.IsNullOrWhiteSpace(value)) name = "-";
                 else name = value;
             }
         }
@@ -22,7 +22,7 @@ namespace App1GetFullName
             get => lastName;
             set
             {
-                if (String.IsNullOrWhiteSpace(value)) lastName = "";
+                if (String.IsNullOrWhiteSpace(value)) lastName = "-";
                 else lastName = value;
             }
         }
@@ -31,7 +31,7 @@ namespace App1GetFullName
             get => patronymic;
             set
             {
-                if (String.IsNullOrWhiteSpace(value)) patronymic = "";
+                if (String.IsNullOrWhiteSpace(value)) patronymic = "-";
                 else patronymic = value;
             }
         }
@@ -56,26 +56,32 @@ namespace App1GetFullName
         public string EnterName(string whatName)
         {
             bool logic = true;
+            string newName = "";
             while (logic)
             {
                 Console.Write("Enter the {0}: ", whatName);
-                name = Console.ReadLine();
+                newName = Console.ReadLine();
 
-                if (String.IsNullOrWhiteSpace(name))
+                if (String.IsNullOrWhiteSpace(newName))
                 {
-                    Console.Write("If you want to leave the {0} blank, type Y", whatName);
-                    Console.ReadKey();
-                   logic = Console.ReadKey() ==  ? false : true;
+                    Console.Write("If you want to keep the {0} field empty, press Y: ", whatName);
+                    logic = Console.ReadKey().Key == ConsoleKey.Y ? false : true;
+                    Console.WriteLine();
                 }
+                else logic = false;
             }
-            return name;
+            return newName;
         }
 
 
-        public string FullName()
+        public string GetFullName()
         {
-            return $"{Name} {LastName} {Patronymic}";
+            return $"Name: {Name}, Last Name: {LastName}, Patronymic: {Patronymic}";
         }
 
+        public string GetFullNameByArgs (string name, string lastName, string patronymic)
+        {
+            return $"{name} {lastName} {patronymic}";
+        }
     }
 }
