@@ -12,26 +12,13 @@ using System;
 
 namespace App3Seasons
 {
-    [Flags]
-    enum Months : int
+    enum Months
     {
-        empty = 0b_0_000_000_000_00,
-        January = 0b_0_000_000_000_01,
-        February = 0b_0_000_000_000_10,
-        March = 0b_0_000_000_001_00,
-        April = 0b_0_000_000_010_00,
-        May = 0b_0_000_000_100_00,
-        June = 0b_0_000_001_000_00,
-        July = 0b_0_000_010_000_00,
-        August = 0b_0_000_100_000_00,
-        September = 0b_0_001_000_000_00,
-        October = 0b_0_010_000_000_00,
-        November = 0b_0_100_000_000_00,
-        December = 0b_1_000_000_000_00,
-        Winter = December | January | February,
-        Spring = March | April | May,
-        Summer = June | July | August,
-        Autumn = September | October | November
+        empty,
+        Winter,
+        Spring,
+        Summer,
+        Autumn
     }
 
 
@@ -53,28 +40,44 @@ namespace App3Seasons
 
         static Months GetSeason(int number)
         {
-            var season = Months.empty;
-            var month = (Months)Enum.GetValues(typeof(Months)).GetValue(number);
 
-            if ((month & Months.Winter) == month) season = Months.Winter;
-            if ((month & Months.Spring) == month) season = Months.Spring;
-            if ((month & Months.Summer) == month) season = Months.Summer;
-            if ((month & Months.Autumn) == month) season = Months.Autumn;
+            var season = Months.empty;
+
+            switch (number)
+            {
+                case 12:
+                case 1:
+                case 2: season = Months.Winter; break;
+                case 3:
+                case 4:
+                case 5: season = Months.Spring; break;
+                case 6:
+                case 7:
+                case 8: season = Months.Summer; break;
+                case 9:
+                case 10:
+                case 11: season = Months.Autumn; break;
+            }
+
             return season;
         }
 
-        static string GetSeasonRu (Months season)
+        static string GetSeasonRu(Months season)
         {
             string ruSeason = "empty";
             switch (season)
             {
-                case Months.Winter: ruSeason = "Зима";
+                case Months.Winter:
+                    ruSeason = "Зима";
                     break;
-                case Months.Spring: ruSeason = "Весна";
+                case Months.Spring:
+                    ruSeason = "Весна";
                     break;
-                case Months.Summer: ruSeason = "Лето";
+                case Months.Summer:
+                    ruSeason = "Лето";
                     break;
-                case Months.Autumn: ruSeason = "Осень";
+                case Months.Autumn:
+                    ruSeason = "Осень";
                     break;
             }
             return ruSeason;
