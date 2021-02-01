@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App1GetFullName", "App1GetFullName\App1GetFullName.csproj", "{035E5A41-8E21-42EE-8A82-56466ED837BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App2NumbersSum", "App2NumbersSum\App2NumbersSum.csproj", "{8908EC3E-A306-4A9A-9682-F6B0F275C229}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App2NumbersSum", "App2NumbersSum\App2NumbersSum.csproj", "{8908EC3E-A306-4A9A-9682-F6B0F275C229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App3Seasons", "App3Seasons\App3Seasons.csproj", "{C4B96982-7C52-4E3B-BE74-FF4E373F36A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8908EC3E-A306-4A9A-9682-F6B0F275C229}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8908EC3E-A306-4A9A-9682-F6B0F275C229}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8908EC3E-A306-4A9A-9682-F6B0F275C229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B96982-7C52-4E3B-BE74-FF4E373F36A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B96982-7C52-4E3B-BE74-FF4E373F36A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B96982-7C52-4E3B-BE74-FF4E373F36A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B96982-7C52-4E3B-BE74-FF4E373F36A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
