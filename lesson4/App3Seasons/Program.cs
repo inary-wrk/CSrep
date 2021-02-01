@@ -12,7 +12,7 @@ using System;
 
 namespace App3Seasons
 {
-    enum Months
+    enum Season
     {
         empty,
         Winter,
@@ -38,45 +38,45 @@ namespace App3Seasons
         }
 
 
-        static Months GetSeason(int number)
+        static Season GetSeason(int number)
         {
 
-            var season = Months.empty;
+            var season = Season.empty;
 
             switch (number)
             {
                 case 12:
                 case 1:
-                case 2: season = Months.Winter; break;
+                case 2: season = Season.Winter; break;
                 case 3:
                 case 4:
-                case 5: season = Months.Spring; break;
+                case 5: season = Season.Spring; break;
                 case 6:
                 case 7:
-                case 8: season = Months.Summer; break;
+                case 8: season = Season.Summer; break;
                 case 9:
                 case 10:
-                case 11: season = Months.Autumn; break;
+                case 11: season = Season.Autumn; break;
             }
 
             return season;
         }
 
-        static string GetSeasonRu(Months season)
+        static string GetSeasonRu(Season season)
         {
             string ruSeason = "empty";
             switch (season)
             {
-                case Months.Winter:
+                case Season.Winter:
                     ruSeason = "Зима";
                     break;
-                case Months.Spring:
+                case Season.Spring:
                     ruSeason = "Весна";
                     break;
-                case Months.Summer:
+                case Season.Summer:
                     ruSeason = "Лето";
                     break;
-                case Months.Autumn:
+                case Season.Autumn:
                     ruSeason = "Осень";
                     break;
             }
