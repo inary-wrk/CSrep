@@ -7,21 +7,28 @@ namespace App4Fibonacci
 {
     class Program
     {
-
-
-        static int Fibonacci(int n)
+        static long FibonacciCorrect()
         {
-            if (n == 0 || n == 1)
+            while (true)
             {
-                return n;
+                Console.Write("Enter the ordinal number of the Fibonacci number: ");
+                if (Int32.TryParse(Console.ReadLine(), out int number) == true)
+                {
+                    return  Fibonacci(Math.Abs(number))*Math.Sign(number);
+                } 
+                else Console.WriteLine("The number must be an integer.");
             }
-            else return Fibonacci(n - 1) + Fibonacci(n - 2);
+        }
+
+        static long Fibonacci(int n)
+        {
+            return (n == 0 || n == 1) ? n : Fibonacci(n - 1) + Fibonacci(n - 2);
         }
 
 
         static void Main(string[] args)
         {
-            Console.WriteLine(Fibonacci(Int32.Parse(Console.ReadLine())));
+            Console.WriteLine(FibonacciCorrect());
         }
     }
 }
