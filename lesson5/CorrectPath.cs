@@ -1,35 +1,34 @@
 ﻿using System;
 using System.IO;
-using 
 
 public class CorrectPath
 {
 
-
     public bool CorrectDirectoryPath(in string path out Exception ex)
     {
-        bool logic = false;
         try
         {
-            Directory.CreateDirectory
-            logic = true;
+            if (Directory.Exists(path)) return true;
+            Path.GetDirectoryName(path);
+            Directory.CreateDirectory(path);
+            return true;
         }
-        catch (UnauthorizedAccessException ex)
+        catch (UnauthorizedAccessException)
         {
             Console.WriteLine("No access to the file.");
         }
-        catch (ArgumentException ex)
-        catch (ArgumentNullException ex)
-        catch (PathTooLongException ex)
-        catch (NotSupportedException ex)
+        catch (ArgumentException)
+        catch (ArgumentNullException)
+        catch (PathTooLongException)
+        catch (NotSupportedException)
         {
             Console.WriteLine("Invalid path.");
         }
-        catch (IOException ex)
+        catch (IOException)
         {
             Console.WriteLine("An I/O error occurred while creating the file.");
         }
-        catch (DirectoryNotFoundException ex)
+        catch (DirectoryNotFoundException)
         {
             Console.WriteLine("Directory not found Exception");
         }
@@ -38,32 +37,31 @@ public class CorrectPath
             Console.WriteLine("Unknown error.");
         }
 
-        return logic;
+        return false;
     }
 
 
-	public bool CorrectFilePath(in string path out string ex)
+	public bool CorrectFilePath(in string path out Exception ex)
     {
-        bool logic = false;
         try
         {
             if (File.Exists(path)) return true;
             File.Create(path);
             File.Delete(path);
-            logic = true;
+            return true;
         }
-        catch (UnauthorizedAccessException ex)
+        catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("No access to the file.");
+            Console.WriteLine("No access.");
         }
-        catch (ArgumentException ex)
-        catch (ArgumentNullException ex)
-        catch (PathTooLongException ex)
-        catch (NotSupportedException ex)
+        catch (ArgumentException)
+        catch (ArgumentNullException)
+        catch (PathTooLongException)
+        catch (NotSupportedException)
         {
             Console.WriteLine("Invalid path.");
         }
-        catch (IOException ex)
+        catch (IOException)
         {
             Console.WriteLine("An I/O error occurred while creating the file.");
         }
@@ -75,9 +73,7 @@ public class CorrectPath
         {
             Console.WriteLine("Unknown error.");
         }
-        
-        return logic;
-        
 
+        return false;
     }
 }

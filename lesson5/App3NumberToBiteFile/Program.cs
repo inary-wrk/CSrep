@@ -9,16 +9,12 @@ namespace App3NumberToBiteFile
 {
     class Program
     {
-        static void EnterPath(byte[] numbers)
+        static void WriteBytes(string path, byte[] numbers)
         {
-            //while (true)
-            //{
-            //    Console.WriteLine("Enter the path to the file, if the file does not exist it will be created:");
-            //   // Directory.Exists()
-            //}
+            
             try
             {
-                File.WriteAllBytes(Console.ReadLine(), numbers);
+                File.WriteAllBytes(path, numbers);
             }
             catch (Exception)
             {
@@ -28,20 +24,31 @@ namespace App3NumberToBiteFile
 
         }
 
-        static byte EnterNumber()
+        static bool EnterByteString(out byte[] arrBytes)
         {
-            do
+            Console.WriteLine("Enter a string of bytes (0..255) separated by spaces");
+            string[] stringBytes = Console.ReadLine().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            arrBytes = new byte[stringBytes.Length];
+            for (int i = 0; i < stringBytes.Length; i++)
             {
-                Console.Write("Enter an integer nuber in the range 0..255: ");
-                if (Byte.TryParse(Console.ReadLine(), out byte number)) return number;
-            } while (true);
+                if (Byte.TryParse(stringBytes[i], out byte number)) arrBytes[i] = number;
+                else return false;
+
+            }
+            return true;
         }
 
 
         static void Main(string[] args)
         {
-            //Console.WriteLine(EnterNumber());
-            Console.WriteLine(System.IO.Path.GetInvalidPathChars());
+            if (EnterByteString(out byte[] arrBytes))
+            {
+                Console.WriteLine("Enter file path");
+                string path = Console.ReadLine();
+                WriteBytes(path, arrBytes);
+            }
+            else Console.WriteLine("Invalid string of bytes.");
+            
         }
     }
 }

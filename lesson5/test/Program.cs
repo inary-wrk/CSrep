@@ -33,7 +33,7 @@ namespace test
         {
 
             //Console.WriteLine(test(0,0));
-            Console.WriteLine(Directory.Exists(@"new\second\file.txt")); 
+            Directory.Delete(@"new\second\"); 
         }
     }
 }
