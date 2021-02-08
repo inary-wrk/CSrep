@@ -9,11 +9,19 @@ namespace App3NumberToBiteFile
 {
     class NumberToBiteFile
     {
-        static bool MyWriteBytes(string path, byte[] numbers)
+        
+        /// <summary>
+        /// Tries to write the incoming byte array <paramref name="arrByte"/> to a byte file <paramref name="path"/>.
+        /// Catch the exceptions that occur and outputs them to the console.
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <param name="arrByte">Array of bytes</param>
+        /// <returns>true if write complete without exception, otherwise false</returns>
+        static bool MyWriteBytes(string path, byte[] arrByte)
         {
             try
             {
-                File.WriteAllBytes(path, numbers);
+                File.WriteAllBytes(path, arrByte);
                 return true;
             }
             catch (Exception ex) when (ex is SecurityException || ex is UnauthorizedAccessException)
@@ -36,6 +44,11 @@ namespace App3NumberToBiteFile
         }
 
 
+        /// <summary>
+        /// Reads a string, tries to convert it to a byte array.
+        /// </summary>
+        /// <param name="arrBytes">Returns an array of bytes via the out parameter.</param>
+        /// <returns>true if the conversion was successful; otherwise, false.</returns>
         static bool EnterByteString(out byte[] arrBytes)
         {
             Console.WriteLine("Enter a string of bytes (0..255) separated by spaces");
@@ -45,7 +58,6 @@ namespace App3NumberToBiteFile
             {
                 if (Byte.TryParse(stringBytes[i], out byte number)) arrBytes[i] = number;
                 else return false;
-
             }
             return true;
         }

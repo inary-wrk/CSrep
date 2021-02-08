@@ -32,8 +32,13 @@ namespace test
         static void Main(string[] args)
         {
             string path = Console.ReadLine();
-            FileInfo fileInfo = new FileInfo(path);
-            
+            DirectoryInfo dir = new DirectoryInfo(path);
+            var ndir = dir.GetDirectories();
+            if (ndir.Length == 0) Console.WriteLine("000000000000000000000000000");
+            foreach(var dir1 in ndir)
+            {
+                Console.WriteLine(dir1.FullName);
+            }
             //DirectoryInfo dirInfo = new DirectoryInfo(path);
             //dirInfo.CreateSubdirectory(Console.ReadLine());
             //try
