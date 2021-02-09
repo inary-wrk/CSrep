@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App3NumberToBiteFile", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "test\test.csproj", "{BC54BE0B-F50C-48A0-B036-EAEF40658B2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App4DirFileTree", "App4DirFileTree\App4DirFileTree.csproj", "{98570FDA-3B03-430F-BBA3-F4BFCE3B0CD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App4DirFileTree", "App4DirFileTree\App4DirFileTree.csproj", "{98570FDA-3B03-430F-BBA3-F4BFCE3B0CD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App5ToDo-list", "App5ToDo-list\App5ToDo-list.csproj", "{879C2EC4-674A-4CDE-B70A-98FB8C62F729}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{98570FDA-3B03-430F-BBA3-F4BFCE3B0CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98570FDA-3B03-430F-BBA3-F4BFCE3B0CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98570FDA-3B03-430F-BBA3-F4BFCE3B0CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879C2EC4-674A-4CDE-B70A-98FB8C62F729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879C2EC4-674A-4CDE-B70A-98FB8C62F729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879C2EC4-674A-4CDE-B70A-98FB8C62F729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879C2EC4-674A-4CDE-B70A-98FB8C62F729}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
