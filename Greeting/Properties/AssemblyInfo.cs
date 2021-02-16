@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Greeting")]
-[assembly: AssemblyDescription("Создать консольное приложение, которое при старте выводит приветствие, записанное в настройках приложения (application-scope). Запросить у пользователя имя, возраст и род деятельности, а затем сохранить данные в настройках. При следующем запуске отобразить эти сведения. Задать приложению версию и описание.")]
+[assembly: AssemblyTitle("Greeting C# lesson 8")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Greeting")]
