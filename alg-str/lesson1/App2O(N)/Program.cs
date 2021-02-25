@@ -29,5 +29,10 @@ namespace App2O_N_
             return sum; // O(1)
         }
 
+
+        static void Main(string[] args)
+        {
+          
+        }
     }
 }

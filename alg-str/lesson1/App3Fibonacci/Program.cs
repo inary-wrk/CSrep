@@ -9,21 +9,22 @@ namespace App3Fibonacci
 
         static int FibonacciRec(int n)
         {
-            return (n == 1 || n == 2) ? n : FibonacciRec(n - 1) + FibonacciRec(n - 2);
+            int sign = Math.Sign(n);
+            return (n <= 2) ? n : FibonacciRec(n - 1 * sign) + FibonacciRec(n - 2 * sign);
         }
 
 
-        static int FibonacciLoop(int n)
+        static int FibonacciLoop(int number)
         {
             int a = 0, b = 1, temp;
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < Math.Abs(number); i++)
             {
                 temp = b;
                 b += a;
                 a = temp;
             }
-            return b;
+            return b * Math.Sign(number);
         }
 
 
