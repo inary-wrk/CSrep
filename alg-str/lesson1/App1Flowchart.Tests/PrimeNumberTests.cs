@@ -4,40 +4,36 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace App1Flowchart.Tests
 {
     [TestFixture()]
     public class PrimeNumberTests
     {
 
-        //[TestCase(-5, "Простое")]
-        //[TestCase(-9, "Не простое")]
-        //[TestCase(-1, "Не простое")]
-        //[TestCase(0, "Не простое")]
-        //[TestCase(1, "Не простое")]
-        //[TestCase(6, "Не простое")]
-        //[TestCase(2, "Простое")]
-        //[TestCase(7, "Простое")]
-        Object DataSet = new[] { new { number = -5, expected = "Простое" },
-                                 new { number = -9, expected = "Не простое" },
-                                 new { number = -1, expected = "Не простое" },
-                                 new { number = 0, expected = "Не простое" },
-                                 new { number = 1, expected = "Не простое" },
-                                 new { number = 2, expected = "Простое" },
-                                 new { number = 6, expected = "Не простое" },
-                                 new { number = 7, expected = "Простое" },
-                               };
+        static object[] DataSet = new object[]
+                                        {
+                                          new object[] { -9, "Не простое" },
+                                          new object[] { -1, "Не простое" },
+                                          new object[] { 0, "Не простое" },
+                                          new object[] { 1, "Не простое" },
+                                          new object[] { 2, "Простое" },
+                                          new object[] { 6, "Не простое" },
+                                          new object[] { 7, "Простое" },
+                                        };
 
 
         [TestCaseSource(nameof(DataSet))]
         public void PrimeTest(int number, string expected)
         {
-            Assert.AreEqual(PrimeNumber.Prime(number), expected);
+            Assert.AreEqual(expected, PrimeNumber.PrimeMy(number));
         }
 
-        public void PrimeWorkedTest(int number, string expected)
+
+        [TestCaseSource(nameof(DataSet))]
+        public void PrimeMyTest(int number, string expected)
         {
-            Assert.AreEqual(PrimeNumber.PrimeWorked(number), expected);
+            Assert.AreEqual(expected, PrimeNumber.PrimeMy(number));
         }
 
     }

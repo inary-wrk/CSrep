@@ -3,18 +3,18 @@
 
 namespace App3Fibonacci
 {
-    class Program
+    public class Program
     {
 
 
-        static int FibonacciRec(int n)
+        public static int FibonacciRec(int n)
         {
             int sign = Math.Sign(n);
-            return (n <= 2) ? n : FibonacciRec(n - 1 * sign) + FibonacciRec(n - 2 * sign);
+            return (n < 2 & n > -2) ? n : FibonacciRec(n - 1 * sign) + FibonacciRec(n - 2 * sign);
         }
 
 
-        static int FibonacciLoop(int number)
+        public static int FibonacciLoop(int number)
         {
             int a = 0, b = 1, temp;
 
@@ -24,7 +24,7 @@ namespace App3Fibonacci
                 b += a;
                 a = temp;
             }
-            return b * Math.Sign(number);
+            return a * Math.Sign(number);
         }
 
 

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App2O(N)", "App2O(N)\App2O(
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App3Fibonacci", "App3Fibonacci\App3Fibonacci.csproj", "{CB0FDCD1-2717-47C7-A72B-3402CF53369F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App1Flowchart.Tests", "App1Flowchart.Tests\App1Flowchart.Tests.csproj", "{B48F5758-3DAC-4AA5-B38A-F6DBB8BEF1FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App1Flowchart.Tests", "App1Flowchart.Tests\App1Flowchart.Tests.csproj", "{B48F5758-3DAC-4AA5-B38A-F6DBB8BEF1FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App3Fibonacci.Tests", "App3Fibonacci.Tests\App3Fibonacci.Tests.csproj", "{D08FC211-3C25-4F3B-9F00-21CEA7F4DD9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B48F5758-3DAC-4AA5-B38A-F6DBB8BEF1FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48F5758-3DAC-4AA5-B38A-F6DBB8BEF1FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48F5758-3DAC-4AA5-B38A-F6DBB8BEF1FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D08FC211-3C25-4F3B-9F00-21CEA7F4DD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D08FC211-3C25-4F3B-9F00-21CEA7F4DD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D08FC211-3C25-4F3B-9F00-21CEA7F4DD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D08FC211-3C25-4F3B-9F00-21CEA7F4DD9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
