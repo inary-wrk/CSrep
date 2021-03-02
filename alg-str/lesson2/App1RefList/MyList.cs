@@ -2,14 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("App1RefList.Tests")]
 namespace GeekBrainsTests
 {
     public class MyList : ILinkedList, IEnumerable<Node>
     {
+        internal const string EMPTY_LIST_NODE_NULL = "The node argument can only be null in an empty list.";
+        internal const string NODE_NULL = "The node argument cannot be null.";
 
-        private Node FirstNode { get; set; }
-        private Node LastNode { get; set; }
+        public Node FirstNode { get; private set; }
+        public Node LastNode { get; private set; }
 
 
         public MyList(params int[] values)
@@ -24,7 +28,7 @@ namespace GeekBrainsTests
         {
 
         }
-
+        
 
         public void AddNode(int value) => AddNodeAfter(LastNode, value);
 
@@ -32,9 +36,13 @@ namespace GeekBrainsTests
         {
             if (node is null)
             {
-                FirstNode = new Node { Value = value };
-                LastNode = FirstNode;
-                return;
+                if (FirstNode is null)
+                {
+                    FirstNode = new Node { Value = value };
+                    LastNode = FirstNode;
+                    return;
+                }
+                else throw new ArgumentNullException(EMPTY_LIST_NODE_NULL, new NullReferenceException("node"));
             }
 
             var temp = node.NextNode;
@@ -73,7 +81,7 @@ namespace GeekBrainsTests
             return null;
         }
 
-        public Node FindNodeIndex(int index)
+        public Node GetNode(int index)
         {
             int listCount = GetCount();
             if (index < 0 || index >= listCount) throw new IndexOutOfRangeException();
@@ -103,13 +111,17 @@ namespace GeekBrainsTests
 
         public void RemoveNode(Node node)
         {
-            if (node is null) throw new ArgumentNullException();
+            if (node is null) throw new ArgumentNullException(NODE_NULL, new NullReferenceException("node"));
 
             if (node.PrevNode is null && node.NextNode is null)
             {
-                FirstNode = null;
-                LastNode = null;
-                return;
+                if (FirstNode == node && LastNode == node)
+                {
+                    FirstNode = null;
+                    LastNode = null;
+                    return;
+                }
+
             }
 
             if (node.PrevNode is null)
@@ -134,7 +146,19 @@ namespace GeekBrainsTests
             node.PrevNode = null;
         }
 
-        public void RemoveNode(int index) => RemoveNode(FindNodeIndex(index));
+        public void RemoveNode(int index) => RemoveNode(GetNode(index));
+
+        public MyList CopyList()
+        {
+            var temp = FirstNode;
+            MyList newList = new MyList();
+            while (!(temp is null))
+            {
+                newList.AddNode(temp.Value);
+                temp = temp.NextNode;
+            }
+            return newList;
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {

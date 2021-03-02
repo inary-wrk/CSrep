@@ -19,14 +19,9 @@ namespace App1RefList
             l.AddNode(41);
             l.AddNode(81);
             var x = l.FindNode(60);
-            l.AddNodeAfter(x, 3);
-            int r = l.GetCount();
-            MyList empty = new MyList(1);           
+            var s = new MyList(0);
+            n.RemoveNode(s.FirstNode);
             
-            foreach (var item in empty)
-            {
-                Console.WriteLine(item.Value);
-            }
         }
     }
 }
