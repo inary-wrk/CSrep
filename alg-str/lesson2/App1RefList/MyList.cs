@@ -9,8 +9,10 @@ namespace GeekBrainsTests
 {
     public class MyList : ILinkedList, IEnumerable<Node>
     {
+        //exception messages
         internal const string EMPTY_LIST_NODE_NULL = "The node argument can only be null in an empty list.";
         internal const string NODE_NULL = "The node argument cannot be null.";
+        internal const string LIST_NOT_CONTAIN_NODE = "The current list does not contain this node.";
 
         public Node FirstNode { get; private set; }
         public Node LastNode { get; private set; }
@@ -28,7 +30,7 @@ namespace GeekBrainsTests
         {
 
         }
-        
+
 
         public void AddNode(int value) => AddNodeAfter(LastNode, value);
 
@@ -81,6 +83,20 @@ namespace GeekBrainsTests
             return null;
         }
 
+        public int FindNodeIndex(Node node)
+        {
+            if(node is null) throw new ArgumentNullException(NODE_NULL, new NullReferenceException("node"));
+            int index = 0;
+            var temp = FirstNode;
+            while (!(temp is null))
+            {
+                if (temp == node) return index;
+                temp = temp.NextNode;
+                index++;
+            }
+            return -1;
+        }
+
         public Node GetNode(int index)
         {
             int listCount = GetCount();
@@ -112,16 +128,13 @@ namespace GeekBrainsTests
         public void RemoveNode(Node node)
         {
             if (node is null) throw new ArgumentNullException(NODE_NULL, new NullReferenceException("node"));
+            if (FindNodeIndex(node) == -1) throw new InvalidOperationException(LIST_NOT_CONTAIN_NODE);
 
             if (node.PrevNode is null && node.NextNode is null)
             {
-                if (FirstNode == node && LastNode == node)
-                {
                     FirstNode = null;
                     LastNode = null;
                     return;
-                }
-
             }
 
             if (node.PrevNode is null)

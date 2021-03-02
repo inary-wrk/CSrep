@@ -15,13 +15,11 @@ namespace App1RefList
             n.AddNode(110);
             var l = new MyList();
             l.AddNode(50);
-            l.AddNode(60);
-            l.AddNode(41);
-            l.AddNode(81);
-            var x = l.FindNode(60);
-            var s = new MyList(0);
-            n.RemoveNode(s.FirstNode);
-            
+            l.AddNode(30);
+            foreach (var item in l)
+            {
+                Console.WriteLine(item.Value);
+            }
         }
     }
 }
