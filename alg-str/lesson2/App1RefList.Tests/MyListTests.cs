@@ -242,21 +242,45 @@ namespace GeekBrainsTests.Tests
 
 
         [Test()]
-        public void CopyListTest()
+        public void CopyListTest_CopyList_CopiedValueEqualBase()
         {
-            var copiedList = nodeList.CopyList();
-            bool successful = false;
-            if (nodeList.GetCount() == copiedList.GetCount())
+            var list = new MyList(10, 16, 18, 24, 26);
+            var copiedList = list.CopyList();
+            bool successful = true;
+
+            if (list.GetCount() == copiedList.GetCount())
             {
-                var tempNodeList = nodeList.FirstNode;
+                var tempNodeList = list.FirstNode;
                 var tempCopiedList = copiedList.FirstNode;
                 while (!(tempNodeList is null && tempCopiedList is null))
                 {
-                    if ((tempNodeList.Value == tempCopiedList.Value))
+                    if (tempNodeList.Value != tempCopiedList.Value)
+                    { successful = false; break; }
+
+                    if (tempNodeList.PrevNode is null || tempCopiedList.PrevNode is null)
+                    {
+                        if (tempNodeList.PrevNode != tempCopiedList.PrevNode) { successful = false; break; }
+                    }
+                    else
+                    {
+                        if (tempNodeList.PrevNode == tempCopiedList.PrevNode) { successful = false; break; }
+                    }
+
+                    if (tempNodeList.NextNode is null || tempCopiedList.NextNode is null)
+                    {
+                        if (tempNodeList.NextNode != tempCopiedList.NextNode) { successful = false; break; }
+                    }
+                    else
+                    {
+                        if (tempNodeList.NextNode == tempCopiedList.NextNode) { successful = false; break; }
+                    }
 
 
+                    tempNodeList = tempNodeList.NextNode;
+                    tempCopiedList = tempCopiedList.NextNode;
                 }
             }
+            else { successful = false; }
             Assert.IsTrue(successful);
         }
 
