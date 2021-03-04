@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App2SearchSort", "App2Searc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App1RefList.Tests", "App1RefList.Tests\App1RefList.Tests.csproj", "{8473C0D0-025D-4E4E-A97B-1C4EC5B5F1B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App2SearchSort.Tests", "App2SearchSort.Tests\App2SearchSort.Tests.csproj", "{E41C3B43-BA1F-4AB9-A88B-D8245A031301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8473C0D0-025D-4E4E-A97B-1C4EC5B5F1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8473C0D0-025D-4E4E-A97B-1C4EC5B5F1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8473C0D0-025D-4E4E-A97B-1C4EC5B5F1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E41C3B43-BA1F-4AB9-A88B-D8245A031301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E41C3B43-BA1F-4AB9-A88B-D8245A031301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E41C3B43-BA1F-4AB9-A88B-D8245A031301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E41C3B43-BA1F-4AB9-A88B-D8245A031301}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
