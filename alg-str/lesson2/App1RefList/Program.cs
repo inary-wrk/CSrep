@@ -13,9 +13,7 @@ namespace App1RefList
             n.AddNode(140);
             n.AddNode(160);
             n.AddNode(110);
-            var l = new MyList();
-            l.AddNode(50);
-            l.AddNode(30);
+            var l = n.CopyList();
             foreach (var item in l)
             {
                 Console.WriteLine(item.Value);

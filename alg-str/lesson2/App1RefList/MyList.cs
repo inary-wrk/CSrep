@@ -13,6 +13,7 @@ namespace GeekBrainsTests
         internal const string EMPTY_LIST_NODE_NULL = "The node argument can only be null in an empty list.";
         internal const string NODE_NULL = "The node argument cannot be null.";
         internal const string LIST_NOT_CONTAIN_NODE = "The current list does not contain this node.";
+        internal const string INDEX_OUT_OF_LIST_RANGE = "Index was outside the bounds of the list.";
 
         public Node FirstNode { get; private set; }
         public Node LastNode { get; private set; }
@@ -85,7 +86,7 @@ namespace GeekBrainsTests
 
         public int FindNodeIndex(Node node)
         {
-            if(node is null) throw new ArgumentNullException(NODE_NULL, new NullReferenceException("node"));
+            if (node is null) throw new ArgumentNullException(NODE_NULL, new NullReferenceException("node"));
             int index = 0;
             var temp = FirstNode;
             while (!(temp is null))
@@ -100,8 +101,8 @@ namespace GeekBrainsTests
         public Node GetNode(int index)
         {
             int listCount = GetCount();
-            if (index < 0 || index >= listCount) throw new IndexOutOfRangeException();
-
+            if (listCount == 0) return null;
+            if (index < 0 || index >= listCount) throw new IndexOutOfRangeException(INDEX_OUT_OF_LIST_RANGE);
             Node temp = index < listCount / 2 ? FirstNode : LastNode;
             if (temp == FirstNode)
             {
@@ -132,9 +133,9 @@ namespace GeekBrainsTests
 
             if (node.PrevNode is null && node.NextNode is null)
             {
-                    FirstNode = null;
-                    LastNode = null;
-                    return;
+                FirstNode = null;
+                LastNode = null;
+                return;
             }
 
             if (node.PrevNode is null)

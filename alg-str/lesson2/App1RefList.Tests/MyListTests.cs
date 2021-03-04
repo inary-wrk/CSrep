@@ -1,21 +1,19 @@
-﻿using NUnit.Framework;
-using System;
+﻿using Xunit;
 using GeekBrainsTests;
-using App1RefList;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GeekBrainsTests.Tests
 {
-    [TestFixture()]
     public class MyListTests
     {
         static MyList emptyList = new MyList();
         static MyList oneNodeList = new MyList(6);
         static MyList nodeList = new MyList(10, 12, 13, 16, 17);
 
-        [TearDown]
-        public void Init()
+
+        public MyListTests()
         {
             emptyList = new MyList();
             oneNodeList = new MyList(6);
@@ -23,7 +21,8 @@ namespace GeekBrainsTests.Tests
         }
 
 
-        static object[] AddNodeAfterTestCases =
+        public static IEnumerable<object[]> AddNodeAfterTestCases =>
+        new List<object[]>
         {   // list, node, value, expected array of list value
             new object[] { emptyList, emptyList.FirstNode, 123, new int[] {123} },
             //list values {6}
@@ -32,7 +31,8 @@ namespace GeekBrainsTests.Tests
             new object[] { nodeList, nodeList.LastNode.PrevNode.PrevNode, 20, new int[] {10, 12, 13, 20, 16, 17} }
         };
 
-        [TestCaseSource(nameof(AddNodeAfterTestCases))]
+        [Theory]
+        [MemberData(nameof(AddNodeAfterTestCases))]
         public void AddNodeAfterTest_AddNode_CreateNode(MyList list, Node node, int value, int[] expected)
         {
             list.AddNodeAfter(node, value);
@@ -58,28 +58,26 @@ namespace GeekBrainsTests.Tests
                 i--;
             }
 
-            Assert.Multiple(() =>
-            {
-                Assert.NotNull(list.FirstNode);
-                Assert.NotNull(list.LastNode);
-                Assert.AreEqual(expected, firstStartActual);
-                Assert.AreEqual(expected, lastStartActual);
-            });
+            Assert.NotNull(list.FirstNode);
+            Assert.NotNull(list.LastNode);
+            Assert.Equal(expected, firstStartActual);
+            Assert.Equal(expected, lastStartActual);
         }
 
 
-        [Test()]
+        [Fact()]
         public void AddNodeAfterTest_ListNotEmptyNodeParamNull_Exception()
         {
             var list = new MyList(12, 323, 14);
             Node node = null;
 
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() => list.AddNodeAfter(node, 3));
-            Assert.That(ex.Message, Is.EqualTo(MyList.EMPTY_LIST_NODE_NULL));
+            Assert.Equal(MyList.EMPTY_LIST_NODE_NULL, ex.Message);
         }
 
 
-        static object[] GetCountTestCases =
+        public static IEnumerable<object[]> GetCountTestCases =>
+        new List<object[]>
         {   //list, expected count of items
             new object[] { emptyList, 0 },
             //list values {6}
@@ -88,15 +86,17 @@ namespace GeekBrainsTests.Tests
             new object[] { nodeList, 5 }
         };
 
-        [TestCaseSource(nameof(GetCountTestCases))]
+        [Theory]
+        [MemberData(nameof(GetCountTestCases))]
         public void GetCountTest(MyList list, int expected)
         {
             int actual = list.GetCount();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
 
-        static object[] FindNodeTestCases =
+        public static IEnumerable<object[]> FindNodeTestCases =>
+        new List<object[]>
         {   //list, search value, expected
             new object[] { emptyList, 0, null },
             //list values {6}
@@ -106,15 +106,17 @@ namespace GeekBrainsTests.Tests
             new object[] { nodeList, 100, null }
         };
 
-        [TestCaseSource(nameof(FindNodeTestCases))]
+        [Theory]
+        [MemberData(nameof(FindNodeTestCases))]
         public void FindNodeTest(MyList list, int searchValue, Node expected)
         {
             var actual = list.FindNode(searchValue);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
 
-        static object[] FindNodeIndexTestCases =
+        public static IEnumerable<object[]> FindNodeIndexTestCases =>
+        new List<object[]>
         {   //list, search node, expected index
             //list values {6}
             new object[] { oneNodeList, oneNodeList.FirstNode, 0 },
@@ -125,27 +127,30 @@ namespace GeekBrainsTests.Tests
             new object[] { nodeList, oneNodeList.FirstNode, -1 }
         };
 
-        [TestCaseSource(nameof(FindNodeIndexTestCases))]
+        [Theory]
+        [MemberData(nameof(FindNodeIndexTestCases))]
         public void FindNodeIndexTest(MyList list, Node node, int expected)
         {
             int actual = list.FindNodeIndex(node);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
 
-        [Test]
+        [Fact]
         public void FindNodeIndexTest_NodeNull_Exception()
         {
             var tempList = new MyList(0);
             Node node = null;
 
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() => tempList.RemoveNode(node));
-            Assert.That(ex.Message, Is.EqualTo(MyList.NODE_NULL));
+            Assert.Equal(MyList.NODE_NULL, ex.Message);
         }
 
 
-        static object[] GetNodeTestCases =
+        public static IEnumerable<object[]> GetNodeTestCases =>
+        new List<object[]>
         {   //list, node index, expected node
+            new object[] { emptyList, 0, null },
             //list values {6}
             new object[] { oneNodeList, 0, oneNodeList.FirstNode },
             //list values {10, 12, 13, 16, 17}
@@ -153,31 +158,37 @@ namespace GeekBrainsTests.Tests
             new object[] { nodeList, 1, nodeList.FirstNode.NextNode },
         };
 
-        [TestCaseSource(nameof(GetNodeTestCases))]
+        [Theory]
+        [MemberData(nameof(GetNodeTestCases))]
         public void GetNodeTest(MyList list, int index, Node expected)
         {
             var actual = list.GetNode(index);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
 
-        static object[] GetNodeTestExceptionCases =
+        public static IEnumerable<object[]> GetNodeTestExceptionCases =>
+        new List<object[]>
         {   //list, node index, expected node
-            new object[] { emptyList, 0 },
+            //list values {6}
+            new object[] { oneNodeList, 1},
             //list values {10, 12, 13, 16, 17}
             new object[] { nodeList, -10},
             new object[] { nodeList, 20},
         };
 
-        [TestCaseSource(nameof(GetNodeTestExceptionCases))]
+        [Theory]
+        [MemberData(nameof(GetNodeTestExceptionCases))]
         public void GetNodeTest_IndexOutOfRange_Exception(MyList list, int index)
         {
-            Assert.Throws<IndexOutOfRangeException>(() => list.GetNode(index));
+            IndexOutOfRangeException ex = Assert.Throws<IndexOutOfRangeException>(() => list.GetNode(index));
+            Assert.Equal(MyList.INDEX_OUT_OF_LIST_RANGE, ex.Message);
         }
 
 
-        static object[] RemoveNodeTestCases =
+        public static IEnumerable<object[]> RemoveNodeTestCases =>
+        new List<object[]>
         {   // list, node, expected array of list value
             //list values {6}
             new object[] { oneNodeList, oneNodeList.FirstNode, new int[0] },
@@ -185,7 +196,8 @@ namespace GeekBrainsTests.Tests
             new object[] { nodeList, nodeList.FirstNode.NextNode, new int[] {10, 13, 16, 17} }
         };
 
-        [TestCaseSource(nameof(RemoveNodeTestCases))]
+        [Theory]
+        [MemberData(nameof(RemoveNodeTestCases))]
         public void RemoveNodeTest(MyList list, Node node, int[] expected)
         {
             list.RemoveNode(node);
@@ -210,38 +222,34 @@ namespace GeekBrainsTests.Tests
                 temp = temp.PrevNode;
                 i--;
             }
-
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expected, firstStartActual);
-                Assert.AreEqual(expected, lastStartActual);
-            });
+            Assert.Equal(expected, firstStartActual);
+            Assert.Equal(expected, lastStartActual);
         }
 
 
-        [Test()]
+        [Fact]
         public void RemoveNodeTest_NodeNull_Exception()
         {
             var tempList = new MyList(0);
             Node node = null;
 
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() => tempList.RemoveNode(node));
-            Assert.That(ex.Message, Is.EqualTo(MyList.NODE_NULL));
+            Assert.Equal(MyList.NODE_NULL, ex.Message);
         }
 
 
-        [Test()]
+        [Fact]
         public void RemoveNodeTest_ListNotContainNode_Exception()
         {
             var tempList = new MyList(0);
             Node node = new Node { Value = 0 };
 
             InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => tempList.RemoveNode(node));
-            Assert.That(ex.Message, Is.EqualTo(MyList.LIST_NOT_CONTAIN_NODE));
+            Assert.Equal(MyList.LIST_NOT_CONTAIN_NODE, ex.Message);
         }
 
 
-        [Test()]
+        [Fact]
         public void CopyListTest_CopyList_CopiedValueEqualBase()
         {
             var list = new MyList(10, 16, 18, 24, 26);
@@ -281,7 +289,7 @@ namespace GeekBrainsTests.Tests
                 }
             }
             else { successful = false; }
-            Assert.IsTrue(successful);
+            Assert.True(successful);
         }
 
     }
