@@ -4,11 +4,9 @@ using System.Text;
 
 namespace App2SearchSort
 {
-    public class Sorting
+    public static class Sorting
     {
-
-
-        public static int[] BubbleSort(int[] array)
+        public static void BubbleSort(int[] array)
         {
             int temp;
             int brkCounter = 1;
@@ -27,20 +25,28 @@ namespace App2SearchSort
                     }
                 }
             }
-            return array;
         }
 
-        public static int[] CombSort(int[] array)
+        public static void CombSort(int[] array)
         {
             int distance = array.Length - 1;
-            while (distance!=0)
+            while (distance > 0)
             {
-                for (int i = 0; i < distance; i++)
+                int left = 0;
+                int right = distance;
+                do
                 {
-                    
-                }
+                    if (array[left] > array[right])
+                    {
+                        int temp = array[right];
+                        array[right] = array[left];
+                        array[left] = temp;
+                    }
+                    right++;
+                    left++;
+                } while (right < array.Length);
+                distance = (int)(distance / 1.23);
             }
-            return array;
         }
 
     }

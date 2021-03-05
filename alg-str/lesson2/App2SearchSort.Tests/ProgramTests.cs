@@ -22,5 +22,6 @@ namespace App2SearchSort.Tests
             int actual = Program.BinSearch(array, searchValue);
             Assert.Equal(expectedIndex, actual);
         }
+
     }
 }

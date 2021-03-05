@@ -4,8 +4,11 @@ namespace App2SearchSort
 {
     public class Program
     {
-        static public int BinSearch(int[] array, int searchValue)
+        static public int BinSearch(int[] array, int searchValue) => BinSearch(array, searchValue, false);
+        static public int BinSearch(int[] array, int searchValue, bool sort) // O(log n)
         {
+            if (sort) Sorting.CombSort(array);
+
             int min = 0;
             int max = array.Length - 1;
             while (min <= max)
@@ -26,9 +29,9 @@ namespace App2SearchSort
             }
             return -1;
         }
-    
 
-        static void Main(string[] args)
+
+        static void Main()
         {
 
         }

@@ -6,7 +6,7 @@ namespace App1RefList
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var n = new MyList(10,20,20);
             n.AddNode(130);
