@@ -5,6 +5,8 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 /*
+* Без создания экземпляра внутри бенчмарка. 
+* Методы начинающиеся с I - методы класса с использовнием обобщений
 |             Method |       Mean |     Error |    StdDev |     Median |
 |------------------- |-----------:|----------:|----------:|-----------:|
 |       IStructFloat |  1.8605 ns | 0.0413 ns | 0.0387 ns |  1.8516 ns |
@@ -15,6 +17,20 @@ using BenchmarkDotNet.Running;
 |         ClassFloat |  0.0003 ns | 0.0012 ns | 0.0010 ns |  0.0000 ns |
 |  StructFloatNoSqrt |  2.0293 ns | 0.0204 ns | 0.0171 ns |  2.0268 ns |
 |       StructDouble |  0.0397 ns | 0.0055 ns | 0.0049 ns |  0.0397 ns |
+
+
+* С создания экземпляра внутри бенчмарка. 
+* Методы начинающиеся с I - методы класса с использовнием обобщений
+|             Method |       Mean |     Error |    StdDev |
+|------------------- |-----------:|----------:|----------:|
+|       IStructFloat |  6.5622 ns | 0.0651 ns | 0.0577 ns |
+|        IClassFloat | 27.9750 ns | 0.1616 ns | 0.1512 ns |
+| IStructFloatNoSqrt |  6.9724 ns | 0.0422 ns | 0.0394 ns |
+|      IStructDouble |  7.7289 ns | 0.0618 ns | 0.0548 ns |
+|        StructFloat | 15.5535 ns | 0.0261 ns | 0.0231 ns |
+|         ClassFloat |  6.3401 ns | 0.0281 ns | 0.0234 ns |
+|  StructFloatNoSqrt | 10.2306 ns | 0.0424 ns | 0.0397 ns |
+|       StructDouble |  0.5047 ns | 0.0092 ns | 0.0086 ns |
 */
 namespace App1Benchmark
 {
