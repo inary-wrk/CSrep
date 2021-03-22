@@ -1,25 +1,23 @@
 ﻿using System;
 using BinTree;
 using System.Collections.Generic;
+using System.Collections;
 
 
 namespace App2Tree
 {
-    class sss
-    {
-        int x = 24;
-        public string str { get; set; }
-    }
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var a = new Tree<string>();
-            a.Search(null);
-            Dictionary<sss, int> s = new();
-            s.Add(new sss{ str = "asds" }, 34);
-            s.Add(new sss{ str = "2" }, 34);
-            s.Add(new sss{ str = "3" }, 34);
+            Tree<int> t = new(10, 20, 60, 40, 5, 6, 4, 3, -1, -2, 15, 100);
+            List<int> l = new();
+            List<int> l1 = new();
+            List<int> l2 = new();
+
+            t.Print(t.Root);
+            //Console.WriteLine();
+            //Console.WriteLine(1/2);
         }
     }
 }

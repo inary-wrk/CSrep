@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BinTree": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

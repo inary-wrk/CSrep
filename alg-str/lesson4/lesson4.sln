@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App1SearchBenchmark", "App1Search\App1SearchBenchmark.csproj", "{77E4FB3F-9C08-413B-92EC-72E97F31B232}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App2Tree", "App2Tree\App2Tree.csproj", "{B37A780D-876B-4BF5-9813-EB616FB817B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App2Tree", "App2Tree\App2Tree.csproj", "{B37A780D-876B-4BF5-9813-EB616FB817B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinTree", "BinTree\BinTree.csproj", "{A1F1B64B-19A8-4499-9844-164844A2E046}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinTree", "BinTree\BinTree.csproj", "{A1F1B64B-19A8-4499-9844-164844A2E046}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

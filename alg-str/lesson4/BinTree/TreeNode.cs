@@ -7,6 +7,11 @@ namespace BinTree
         public TreeNode<T> Parent { get; internal set; }
         public TreeNode<T> Left { get; internal set; }
         public TreeNode<T> Right { get; internal set; }
-        public T item { get; set; }
+        public T Item { get; internal set; }
+        internal int Height { get; set; }
+        public override string ToString()
+        {
+            return Item.ToString();
+        }
     }
 }
