@@ -162,9 +162,10 @@ namespace BinTree
 
         public void Clear()
         {
-            var arr = ToArray();
-            for (int i = 0; i < arr.Length; i++)
-                Invalidate(arr[i]);
+            var enBFS = BFS();
+            while (enBFS.MoveNext())
+                Invalidate(enBFS.Current);
+
             Count = 0;
             Root = null;
         }
@@ -467,15 +468,15 @@ namespace BinTree
             Console.Write(down);
             left -= direction;
             sideCount--;
-                while (sideCount > 1)
-                {
-                    Console.SetCursorPosition(left, top);
-                    Console.Write('_');
-                    left -= direction;
-                    sideCount--;
-                }
-                Console.SetCursorPosition(left, top + 1);
-                Console.Write(down);
+            while (sideCount > 1)
+            {
+                Console.SetCursorPosition(left, top);
+                Console.Write('_');
+                left -= direction;
+                sideCount--;
+            }
+            Console.SetCursorPosition(left, top + 1);
+            Console.Write(down);
         }
         #endregion
     }

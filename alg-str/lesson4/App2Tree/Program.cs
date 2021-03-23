@@ -16,6 +16,7 @@ namespace App2Tree
             List<int> l2 = new();
 
             t.Print(t.Root);
+            t.Clear();
             //Console.WriteLine();
             //Console.WriteLine(1/2);
         }
