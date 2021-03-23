@@ -91,7 +91,7 @@ namespace BinTree
         #endregion
 
         #region Balancing
-
+        // TODO: balancing
         internal static void Balance(TreeNode<T> node)
         {
             throw new NotImplementedException();
@@ -374,11 +374,12 @@ namespace BinTree
         #endregion
 
         #region Print
-        public void Print(TreeNode<T> node)
+        // TODO: поменять алгоритм вывода, не у всех списков будут нули вместо элементов
+        public void Print(TreeNode<T> startNode)
         {
-            if (node is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("node"));
+            if (startNode is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("node"));
 
-            var enBFS = BFS(node);
+            var enBFS = BFS(startNode);
             List<string> list = new();
             int expListCount = 1;
             var startTreePos = Console.GetCursorPosition();
@@ -388,7 +389,7 @@ namespace BinTree
             int prevLine = 0;
             int prevMaxStr = 0;
             int prevPosTop = startTreePos.Top - 3;
-            list.Add(node.ToString());
+            list.Add(startNode.ToString());
 
             while (enBFS.MoveNext())
             {
