@@ -374,76 +374,121 @@ namespace BinTree
         #endregion
 
         #region Print
-        // TODO: поменять алгоритм вывода, не у всех списков будут нули вместо элементов
+        // TODO: сделать нормальный формат
         public void Print(TreeNode<T> startNode)
         {
             if (startNode is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("node"));
-
             var enBFS = BFS(startNode);
-            List<string> list = new();
-            int expListCount = 1;
+
+            List<PrintNode> list = new();
+            List<PrintNode> prevList = new();
             var startTreePos = Console.GetCursorPosition();
+            startTreePos.Left++;
             int intervalSide = 2; //number of spaces between tree nodes
             int intervalHeight = 3; //number of lines - 1 between tree nodes, minimum 3
+            int stop = 0;
 
-            int prevLine = 0;
-            int prevMaxStr = 0;
-            int prevPosTop = startTreePos.Top - 3;
-            list.Add(startNode.ToString());
 
-            while (enBFS.MoveNext())
+            prevList.Add(new PrintNode(null, Child.Left));
+            int maxLine = 0;
+            int height = startNode.Height;
+            int posTop = startTreePos.Top - intervalHeight;
+            TreeNode<T> current = startNode;
+
+            while (true)
             {
-                if (list.Count == expListCount)
+                //loop out
+                if (enBFS.MoveNext())
+                    current = enBFS.Current;
+                else
+                {
+                    stop++;
+                    height = -1;
+                }
+
+
+                if (current.Height != height)
                 {
                     int maxStr = 0;
                     int line;
                     int diffLine;
+                    posTop += intervalHeight;
+                    var nodeStrArr = new string[list.Count];
 
-                    foreach (var item in list)
-                        if (item is not null && item.Length > maxStr) maxStr = item.Length;
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        nodeStrArr[i] = list[i].node.Item.ToString();
+                        if (nodeStrArr[i].Length > maxStr) maxStr = nodeStrArr[i].Length;
+                    }
 
                     line = list.Count * (maxStr + intervalSide) - intervalSide;
-                    diffLine = line - prevLine;
-                    int offset = 0;
+                    diffLine = line - maxLine;
 
+                    int offset = 1;
                     if (diffLine > 1)
                     {
-                        offset = (diffLine + 1) / 2;
-                        Console.MoveBufferArea(startTreePos.Left, startTreePos.Top, prevLine, prevPosTop + 4, startTreePos.Left + offset, startTreePos.Top);
+                        offset = (diffLine + 2) / 2;
+                        Console.MoveBufferArea(startTreePos.Left, startTreePos.Top,
+                                              maxLine, posTop + 1,
+                                              startTreePos.Left + offset, startTreePos.Top);
                     }
                     else
                         maxStr += Math.Abs(diffLine) / list.Count;
 
 
-                    int posTop = prevPosTop + intervalHeight;
                     int posLeft;
-                    int prevPosLeft = startTreePos.Left;
-                    for (int i = 0; i < list.Count; i++)
+                    int k = 0;
+                    for (int j = 0; j < prevList.Count * 2;)
                     {
-                        if (list[i] is null) continue;
-                        posLeft = startTreePos.Left + i * (maxStr + intervalSide) + (maxStr - list[i].Length) / 2;
+                        int parity = j & 1;
+                        switch (prevList[j / 2].child)
+                        {
+                            case Child.NoChild:
+                                j += 2;
+                                continue;
+                            case Child.Left when (parity == 0):
+                                break;
+                            case Child.Right when (parity == 1):
+                                break;
+                            case Child.Both:
+                                break;
+                            default:
+                                j++;
+                                continue;
+                        }
+
+                        posLeft = startTreePos.Left + j * (maxStr + intervalSide) + (maxStr - nodeStrArr[k].Length) / 2;
+                        list[k].left = posLeft;
+
                         Console.SetCursorPosition(posLeft, posTop);
-                        Console.Write(list[i]);
+                        Console.Write(nodeStrArr[k]);
+                        if (height != startNode.Height)
+                            PrintBranch(prevList[j / 2].left + parity + offset, posTop - intervalHeight + 1, posLeft + parity, posTop - 1);
 
-                        int parity = i & 1;
-                        if (parity == 0)
-                            prevPosLeft = startTreePos.Left + (i / 2) * (prevMaxStr + intervalSide) + maxStr / 2 + offset;
-
-                        if (list.Count > 1)
-                            PrintBranch(prevPosLeft + parity - 1, prevPosTop + 1, posLeft + parity, posTop - 1);
+                        k++;
+                        j++;
+                        if (k >= list.Count) break;
                     }
 
-                    prevLine = line;
-                    prevMaxStr = maxStr;
-                    prevPosTop = posTop;
-                    expListCount *= 2;
-                    list.Clear();
+                    if (line > maxLine) maxLine = line;
+                    prevList = list;
+                    list = new List<PrintNode>();
+
+                    if (stop == 2) break;
                 }
 
-                list.Add(enBFS.Current.Left?.ToString());
-                list.Add(enBFS.Current.Right?.ToString());
+
+                var child = Child.NoChild;
+                if (current.Left is not null)
+                    child++;
+                if (current.Right is not null)
+                    child += 2;
+
+                list.Add(new PrintNode(current, child));
+                height = current.Height;
             }
         }
+
 
         private static void PrintBranch(int left, int top, int left2, int top2)
         {
@@ -478,6 +523,27 @@ namespace BinTree
             }
             Console.SetCursorPosition(left, top + 1);
             Console.Write(down);
+        }
+
+        enum Child : byte
+        {
+            NoChild,
+            Left,
+            Right,
+            Both
+        }
+
+        private class PrintNode
+        {
+            internal TreeNode<T> node;
+            internal int left;
+            internal Child child;
+
+            public PrintNode(TreeNode<T> node, Child child)
+            {
+                this.node = node;
+                this.child = child;
+            }
         }
         #endregion
     }
