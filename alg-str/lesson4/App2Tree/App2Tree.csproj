@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\App1Search\App1SearchBenchmark.csproj" />
     <ProjectReference Include="..\BinTree\BinTree.csproj" />
   </ItemGroup>
 

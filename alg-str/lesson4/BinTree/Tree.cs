@@ -8,13 +8,17 @@ namespace BinTree
     public class Tree<T> : ICollection<T>, ICollection
         where T : IComparable<T>, IEquatable<T>
     {
+        private Object _syncRoot;
+
         public TreeNode<T> Root { get; private set; }
         public int Count { get; private set; }
 
 
         public bool IsReadOnly { get { return false; } }
         public bool IsSynchronized { get { return false; } }
-        private Object _syncRoot;
+        public bool Balanced { get; set; }
+
+
         public object SyncRoot
         {
             get
@@ -34,19 +38,24 @@ namespace BinTree
 
         public Tree()
         {
-
         }
 
-        public Tree(IEnumerable<T> collection)
+        public Tree(IEnumerable<T> collection, bool balanced = false)
         {
+            Balanced = balanced;
             if (collection is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("collection"));
             var en = collection.GetEnumerator();
             while (en.MoveNext())
                 Add(en.Current);
         }
 
-        public Tree(params T[] item)
+        public Tree(params T[] item) : this(false, item)
         {
+        }
+
+        public Tree(bool balanced, params T[] item)
+        {
+            Balanced = balanced;
             for (int i = 0; i < item.Length; i++)
                 Add(item[i]);
         }
@@ -160,6 +169,7 @@ namespace BinTree
             node.Left = null;
             node.Right = null;
         }
+
 
         public void Clear()
         {
@@ -381,10 +391,8 @@ namespace BinTree
         /// <param name="LNR">Binary tree traversal (left number right)</param>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public static void Print(IEnumerator<TreeNode<T>> LNR,  int lineSpace, int nodeSpace)
+        public static void Print(IEnumerator<TreeNode<T>> LNR, byte lineSpace, byte nodeSpace)
         {
-            if (lineSpace < 0) throw new ArgumentOutOfRangeException("lineSpace", lineSpace, ARGUMENT_NEGATIVE);
-            if (nodeSpace < 0) throw new ArgumentOutOfRangeException("nodeSpace", nodeSpace, ARGUMENT_NEGATIVE);
 
             lineSpace++;
             var startPos = Console.GetCursorPosition();
@@ -394,7 +402,7 @@ namespace BinTree
             Stack<int> stackidnt = new();
             var temp = new TreeNode<T> { Height = -1 };
             int prevTop = 0;
-
+            int prevStrLenght = 0;
 
             stackidnt.Push(0);
             while (LNR.MoveNext())
@@ -404,12 +412,11 @@ namespace BinTree
 
                 if (LNR.Current.Height > temp.Height && temp.Height != -1)
                 {
-                    int prevleft = stackidnt.Peek() + maxStr;
-
+                    int prevleft = stackidnt.Peek() + prevStrLenght;
                     indent = indent + maxStr + nodeSpace + startPos.Left;
-                    if (Console.BufferWidth <= indent) Console.BufferWidth = indent * 2;
-
                     stackidnt.Push(indent);
+
+                    if (Console.BufferWidth < indent+10) Console.BufferWidth = indent+10;
 
                     //print rigth branch
                     Console.SetCursorPosition(prevleft, prevTop);
@@ -449,14 +456,18 @@ namespace BinTree
                     }
                 }
 
-                string str = LNR.Current.ToString();
+
+                string str = "{" + LNR.Current.ToString() + "}";
                 if (maxStr < str.Length) maxStr = str.Length;
+
+                if (Console.BufferWidth < indent + str.Length+10) Console.BufferWidth = indent + str.Length + 10;
 
 
                 Console.SetCursorPosition(stackidnt.Peek(), top);
                 Console.Write(str);
                 temp = LNR.Current;
                 prevTop = top;
+                prevStrLenght = str.Length;
             }
 
             Console.SetCursorPosition(0, maxTop + 1);
@@ -464,23 +475,15 @@ namespace BinTree
         /// <summary>
         /// Draw a Tree.
         /// </summary>
-        public void Print() => Print(DFS(Root), 2, 1);
-        /// <summary>
-        /// Draw a Tree.
-        /// </summary>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public void Print(int lineSpace, int nodeSpace) => Print(DFS(Root), lineSpace, nodeSpace);
-        /// <summary>
-        /// Draw a subtree starting from this <paramref name="node"/>
-        /// </summary>
-        public void Print(TreeNode<T> node) => Print(DFS(node), 2, 1);
+        public void Print(byte lineSpace = 1, byte nodeSpace = 1) => Print(DFS(Root), lineSpace, nodeSpace);
         /// <summary>
         /// Draw a subtree starting from this <paramref name="node"/>
         /// </summary>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public void Print(TreeNode<T> node, int lineSpace, int nodeSpace) => Print(DFS(node), lineSpace, nodeSpace);
+        public void Print(TreeNode<T> node, byte lineSpace = 1, byte nodeSpace = 1) => Print(DFS(node), lineSpace, nodeSpace);
         #endregion
     }
 }
