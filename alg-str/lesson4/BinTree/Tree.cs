@@ -27,6 +27,7 @@ namespace BinTree
 
         //exception messages
         internal const string ARGUMENT_NULL = "The argument cannot be null.";
+        internal const string ARGUMENT_NEGATIVE = "The argument cannot be negative.";
 
 
         #region ctor, Add
@@ -281,7 +282,7 @@ namespace BinTree
 
         /// <summary>Root start.</summary>
         public IEnumerator<TreeNode<T>> BFS() => BFS(Root);
-        public IEnumerator<TreeNode<T>> BFS(TreeNode<T> node)
+        public static IEnumerator<TreeNode<T>> BFS(TreeNode<T> node)
         {
             Queue<TreeNode<T>> queue = new();
             TreeNode<T> temp;
@@ -300,7 +301,7 @@ namespace BinTree
         public IEnumerator<TreeNode<T>> DFS() => DFS(Root);
 
         /// <summary>LNR</summary>
-        public IEnumerator<TreeNode<T>> DFS(TreeNode<T> node)
+        public static IEnumerator<TreeNode<T>> DFS(TreeNode<T> node)
         {
             Stack<TreeNode<T>> stack = new();
             TreeNode<T> temp;
@@ -374,179 +375,112 @@ namespace BinTree
         #endregion
 
         #region Print
-        // TODO: сделать нормальный формат
-        public void Print(TreeNode<T> startNode)
+        /// <summary>
+        /// Draw a Tree. The enumerator must use LNR tree traversal.
+        /// </summary>
+        /// <param name="LNR">Binary tree traversal (left number right)</param>
+        /// <param name="lineSpace">Line spacing.</param>
+        /// <param name="nodeSpace">Interval between tree nodes.</param>
+        public static void Print(IEnumerator<TreeNode<T>> LNR,  int lineSpace, int nodeSpace)
         {
-            if (startNode is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("node"));
-            var enBFS = BFS(startNode);
+            if (lineSpace < 0) throw new ArgumentOutOfRangeException("lineSpace", lineSpace, ARGUMENT_NEGATIVE);
+            if (nodeSpace < 0) throw new ArgumentOutOfRangeException("nodeSpace", nodeSpace, ARGUMENT_NEGATIVE);
 
-            List<PrintNode> list = new();
-            List<PrintNode> prevList = new();
-            var startTreePos = Console.GetCursorPosition();
-            startTreePos.Left++;
-            int intervalSide = 2; //number of spaces between tree nodes
-            int intervalHeight = 3; //number of lines - 1 between tree nodes, minimum 3
-            int stop = 0;
+            lineSpace++;
+            var startPos = Console.GetCursorPosition();
+            int maxStr = 0;
+            int indent = 0;
+            int maxTop = 0;
+            Stack<int> stackidnt = new();
+            var temp = new TreeNode<T> { Height = -1 };
+            int prevTop = 0;
 
 
-            prevList.Add(new PrintNode(null, Child.Left));
-            int maxLine = 0;
-            int height = startNode.Height;
-            int posTop = startTreePos.Top - intervalHeight;
-            TreeNode<T> current = startNode;
-
-            while (true)
+            stackidnt.Push(0);
+            while (LNR.MoveNext())
             {
-                //loop out
-                if (enBFS.MoveNext())
-                    current = enBFS.Current;
+                int top = startPos.Top + LNR.Current.Height * lineSpace;
+                if (top > maxTop) maxTop = top;
+
+                if (LNR.Current.Height > temp.Height && temp.Height != -1)
+                {
+                    int prevleft = stackidnt.Peek() + maxStr;
+
+                    indent = indent + maxStr + nodeSpace + startPos.Left;
+                    if (Console.BufferWidth <= indent) Console.BufferWidth = indent * 2;
+
+                    stackidnt.Push(indent);
+
+                    //print rigth branch
+                    Console.SetCursorPosition(prevleft, prevTop);
+                    while (prevleft < indent)
+                    {
+                        Console.Write('─');
+                        prevleft++;
+                    }
+
+                    Console.Write('┐');
+
+                    while (prevTop < top)
+                    {
+                        Console.SetCursorPosition(prevleft, prevTop + 1);
+                        Console.Write('│');
+                        prevTop++;
+                    }
+
+                    maxStr = 0;
+                }
                 else
                 {
-                    stop++;
-                    height = -1;
-                }
 
-
-                if (current.Height != height)
-                {
-                    int maxStr = 0;
-                    int line;
-                    int diffLine;
-                    posTop += intervalHeight;
-                    var nodeStrArr = new string[list.Count];
-
-                    for (int i = 0; i < list.Count; i++)
-                    {
-                        nodeStrArr[i] = list[i].node.Item.ToString();
-                        if (nodeStrArr[i].Length > maxStr) maxStr = nodeStrArr[i].Length;
-                    }
-
-                    line = list.Count * (maxStr + intervalSide) - intervalSide;
-                    diffLine = line - maxLine;
-
-                    int offset = 1;
-                    if (diffLine > 1)
-                    {
-                        offset = (diffLine + 2) / 2;
-                        Console.MoveBufferArea(startTreePos.Left, startTreePos.Top,
-                                              maxLine, posTop + 1,
-                                              startTreePos.Left + offset, startTreePos.Top);
-                    }
-                    else
-                        maxStr += Math.Abs(diffLine) / list.Count;
-
-
-                    int posLeft;
-                    int k = 0;
-                    for (int j = 0; j < prevList.Count * 2;)
-                    {
-                        int parity = j & 1;
-                        switch (prevList[j / 2].child)
+                    if (!ReferenceEquals(temp, LNR.Current.Left))
+                        for (int i = 1; i < temp.Height - LNR.Current.Height; i++)
                         {
-                            case Child.NoChild:
-                                j += 2;
-                                continue;
-                            case Child.Left when (parity == 0):
-                                break;
-                            case Child.Right when (parity == 1):
-                                break;
-                            case Child.Both:
-                                break;
-                            default:
-                                j++;
-                                continue;
+                            stackidnt.Pop();
+                            prevTop -= lineSpace;
                         }
 
-                        posLeft = startTreePos.Left + j * (maxStr + intervalSide) + (maxStr - nodeStrArr[k].Length) / 2;
-                        list[k].left = posLeft;
-
-                        Console.SetCursorPosition(posLeft, posTop);
-                        Console.Write(nodeStrArr[k]);
-                        if (height != startNode.Height)
-                            PrintBranch(prevList[j / 2].left + parity + offset, posTop - intervalHeight + 1, posLeft + parity, posTop - 1);
-
-                        k++;
-                        j++;
-                        if (k >= list.Count) break;
+                    //print left branch
+                    while (prevTop > top)
+                    {
+                        Console.SetCursorPosition(stackidnt.Peek(), prevTop - 1);
+                        Console.Write('│');
+                        prevTop--;
                     }
-
-                    if (line > maxLine) maxLine = line;
-                    prevList = list;
-                    list = new List<PrintNode>();
-
-                    if (stop == 2) break;
                 }
 
+                string str = LNR.Current.ToString();
+                if (maxStr < str.Length) maxStr = str.Length;
 
-                var child = Child.NoChild;
-                if (current.Left is not null)
-                    child++;
-                if (current.Right is not null)
-                    child += 2;
 
-                list.Add(new PrintNode(current, child));
-                height = current.Height;
+                Console.SetCursorPosition(stackidnt.Peek(), top);
+                Console.Write(str);
+                temp = LNR.Current;
+                prevTop = top;
             }
+
+            Console.SetCursorPosition(0, maxTop + 1);
         }
-
-
-        private static void PrintBranch(int left, int top, int left2, int top2)
-        {
-            int direction = Math.Sign(left - left2);
-            char down = direction > 0 ? '/' : '\\';
-            int sideCount = Math.Abs(left - left2);
-            //while (top <= top2 - 2)
-            //{
-            //    Console.SetCursorPosition(left, top);
-            //    Console.Write(down);
-            //    left -= direction;
-            //    sideCount--;
-            //    if (sideCount > 2)
-            //    {
-            //        Console.SetCursorPosition(left, top);
-            //        Console.Write('_');
-            //        left -= direction;
-            //        sideCount--;
-            //    }
-            //    top++;
-            //}
-            Console.SetCursorPosition(left, top);
-            Console.Write(down);
-            left -= direction;
-            sideCount--;
-            while (sideCount > 1)
-            {
-                Console.SetCursorPosition(left, top);
-                Console.Write('_');
-                left -= direction;
-                sideCount--;
-            }
-            Console.SetCursorPosition(left, top + 1);
-            Console.Write(down);
-        }
-
-        enum Child : byte
-        {
-            NoChild,
-            Left,
-            Right,
-            Both
-        }
-
-        private class PrintNode
-        {
-            internal TreeNode<T> node;
-            internal int left;
-            internal Child child;
-
-            public PrintNode(TreeNode<T> node, Child child)
-            {
-                this.node = node;
-                this.child = child;
-            }
-        }
+        /// <summary>
+        /// Draw a Tree.
+        /// </summary>
+        public void Print() => Print(DFS(Root), 2, 1);
+        /// <summary>
+        /// Draw a Tree.
+        /// </summary>
+        /// <param name="lineSpace">Line spacing.</param>
+        /// <param name="nodeSpace">Interval between tree nodes.</param>
+        public void Print(int lineSpace, int nodeSpace) => Print(DFS(Root), lineSpace, nodeSpace);
+        /// <summary>
+        /// Draw a subtree starting from this <paramref name="node"/>
+        /// </summary>
+        public void Print(TreeNode<T> node) => Print(DFS(node), 2, 1);
+        /// <summary>
+        /// Draw a subtree starting from this <paramref name="node"/>
+        /// </summary>
+        /// <param name="lineSpace">Line spacing.</param>
+        /// <param name="nodeSpace">Interval between tree nodes.</param>
+        public void Print(TreeNode<T> node, int lineSpace, int nodeSpace) => Print(DFS(node), lineSpace, nodeSpace);
         #endregion
     }
 }
-
-
