@@ -225,6 +225,8 @@ namespace BinTree
                         parent.Right = successor;
                 }
 
+                ReduceHeight(successor);
+                successor.Height = node.Height;
                 successor.Parent = parent;
                 Invalidate(node);
                 return true;
@@ -232,18 +234,31 @@ namespace BinTree
 
             // two child
             successor = FindMin(node.Right); // right successor
+            ReduceHeight(successor);
             //remove right successor
             parent = successor.Parent;
             if (successor.Right is not null) successor.Right.Parent = parent;
-            if (successor.Item.CompareTo(parent.Item) < 0)
-                parent.Left = successor.Right;
-            else parent.Right = successor.Right;
+            parent.Left = successor.Right;
 
             //swap
             node.Item = successor.Item;
             Invalidate(successor);
             return true;
         }
+
+
+        /// <summary>
+        /// Reduce the <paramref name="Height"/> of the <paramref name="startNode"/> subtrees by one.
+        /// </summary>
+        internal static void ReduceHeight(TreeNode<T> startNode)
+        {
+            var enBFS = BFS(startNode);
+            enBFS.MoveNext();
+            while (enBFS.MoveNext())
+                enBFS.Current.Height--;
+        }
+
+
         #endregion
 
         #region Search
@@ -362,9 +377,9 @@ namespace BinTree
             }
         }
 
-        public TreeNode<T>[] ToArray()
+        public T[] ToArray()
         {
-            TreeNode<T>[] array = new TreeNode<T>[Count];
+            T[] array = new T[Count];
             CopyTo(array, 0);
             return array;
         }
@@ -394,8 +409,8 @@ namespace BinTree
         public static void Print(IEnumerator<TreeNode<T>> LNR, byte lineSpace, byte nodeSpace)
         {
 
-            lineSpace++;
             var startPos = Console.GetCursorPosition();
+            lineSpace++;
             int maxStr = 0;
             int indent = 0;
             int maxTop = 0;
@@ -416,10 +431,12 @@ namespace BinTree
                     indent = indent + maxStr + nodeSpace + startPos.Left;
                     stackidnt.Push(indent);
 
-                    if (Console.BufferWidth < indent+10) Console.BufferWidth = indent+10;
+                    if (Console.BufferWidth <= indent) Console.BufferWidth = indent + 10;
 
                     //print rigth branch
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.SetCursorPosition(prevleft, prevTop);
+
                     while (prevleft < indent)
                     {
                         Console.Write('─');
@@ -435,6 +452,7 @@ namespace BinTree
                         prevTop++;
                     }
 
+                    Console.ResetColor();
                     maxStr = 0;
                 }
                 else
@@ -448,19 +466,22 @@ namespace BinTree
                         }
 
                     //print left branch
-                    while (prevTop > top)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    while (prevTop - 1 > top)
                     {
                         Console.SetCursorPosition(stackidnt.Peek(), prevTop - 1);
                         Console.Write('│');
                         prevTop--;
                     }
+                    Console.ResetColor();
                 }
 
 
                 string str = "{" + LNR.Current.ToString() + "}";
                 if (maxStr < str.Length) maxStr = str.Length;
 
-                if (Console.BufferWidth < indent + str.Length+10) Console.BufferWidth = indent + str.Length + 10;
+
+                if (Console.BufferWidth <= indent + str.Length) Console.BufferWidth = indent + str.Length + 10;
 
 
                 Console.SetCursorPosition(stackidnt.Peek(), top);
@@ -469,7 +490,6 @@ namespace BinTree
                 prevTop = top;
                 prevStrLenght = str.Length;
             }
-
             Console.SetCursorPosition(0, maxTop + 1);
         }
         /// <summary>
@@ -479,7 +499,7 @@ namespace BinTree
         /// <param name="nodeSpace">Interval between tree nodes.</param>
         public void Print(byte lineSpace = 1, byte nodeSpace = 1) => Print(DFS(Root), lineSpace, nodeSpace);
         /// <summary>
-        /// Draw a subtree starting from this <paramref name="node"/>
+        /// Draw a tree starting from this <paramref name="node"/>
         /// </summary>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
