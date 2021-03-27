@@ -65,22 +65,19 @@ namespace BinTree
             if (item is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("item"));
             //add root
             if (Root is null)
-                Root = new TreeNode<T> { Item = item };
+                Root = new TreeNode<T> { Item = item, Height = 0 };
             else
             {
                 var temp = Root;
-                int compare;
-                int height = 0;
                 while (true)
                 {
-                    height++;
-                    compare = item.CompareTo(temp.Item);
+                    int compare = item.CompareTo(temp.Item);
                     if (compare == 0) return;  // return if item alredy exist
                     if (compare < 0)
                     {
                         if (temp.Left is null)
                         {
-                            temp.Left = new TreeNode<T> { Item = item, Parent = temp, Height = height };
+                            temp.Left = new TreeNode<T> { Item = item, Parent = temp, Height = temp.Height + 1 };
                             break;
                         }
                         else temp = temp.Left;
@@ -89,26 +86,50 @@ namespace BinTree
                     {
                         if (temp.Right is null)
                         {
-                            temp.Right = new TreeNode<T> { Item = item, Parent = temp, Height = height };
+                            temp.Right = new TreeNode<T> { Item = item, Parent = temp, Height = temp.Height + 1 };
                             break;
                         }
                         else temp = temp.Right;
                     }
                 }
+                if (Balanced == true) Balance(temp);
             }
             Count++;
         }
         #endregion
 
         #region Balancing
-        // TODO: balancing
+        // TODO: fix change height
+
         internal static void Balance(TreeNode<T> node)
         {
-            throw new NotImplementedException();
+            while (node is not null)
+            {
+                switch (BalanceFactor(node))
+                {
+                    case 2 when BalanceFactor(node.Left) == 1:
+                        RightRotate(node);
+                        break;
+                    case 2 when BalanceFactor(node.Left) == -1:
+                        LeftRotate(node.Left);
+                        RightRotate(node);
+                        break;
+                    case -2 when BalanceFactor(node.Right) == -1:
+                        LeftRotate(node);
+                        break;
+                    case -2 when BalanceFactor(node.Right) == 1:
+                        RightRotate(node.Right);
+                        LeftRotate(node);
+                        break;
+                    default:
+                        break;
+                }
+                node = node.Parent;
+            }
         }
 
         /// <summary>Left node cannot be null.</summary>
-        internal static void RightRotation(TreeNode<T> node)
+        internal static void RightRotate(TreeNode<T> node)
         {
             var temp = node.Parent;
             var succesor = node.Left;
@@ -127,10 +148,15 @@ namespace BinTree
             node.Left = temp;
             if (temp is not null) temp.Parent = node;
 
+            //change height
+            succesor.Height--;
+            node.Height++;
+            ChangeHeight(node.Right, 1);
+            ChangeHeight(succesor.Left, -1);
         }
 
         /// <summary>Right node cannot be null.</summary>
-        internal static void LeftRotation(TreeNode<T> node)
+        internal static void LeftRotate(TreeNode<T> node)
         {
             var temp = node.Parent;
             var succesor = node.Right;
@@ -144,20 +170,33 @@ namespace BinTree
                 else temp.Right = succesor;
             }
 
+
             temp = succesor.Left;
             succesor.Left = node;
             node.Right = temp;
             if (temp is not null) temp.Parent = node;
+
+            //change height
+            succesor.Height--;
+            node.Height++;
+            ChangeHeight(node.Left, 1);
+            ChangeHeight(succesor.Right, -1);
         }
 
         internal static int BalanceFactor(TreeNode<T> node)
         {
-            return node is null ? 0 : node.Left?.Height ?? 0 - node.Right?.Height ?? 0;
+            int left = node.Left is null ? node.Height : MaxHeight(node.Left);
+            int right = node.Right is null ? node.Height : MaxHeight(node.Right);
+            return left - right;
         }
 
         internal static int MaxHeight(TreeNode<T> node)
         {
-            throw new NotImplementedException();
+            var enBFS = BFS(node);
+            int maxHeight = 0;
+            while (enBFS.MoveNext())
+                if (enBFS.Current.Height > maxHeight) maxHeight = enBFS.Current.Height;
+            return maxHeight;
         }
         #endregion
 
@@ -225,7 +264,7 @@ namespace BinTree
                         parent.Right = successor;
                 }
 
-                ReduceHeight(successor);
+                ChangeHeight(successor, -1);
                 successor.Height = node.Height;
                 successor.Parent = parent;
                 Invalidate(node);
@@ -234,7 +273,7 @@ namespace BinTree
 
             // two child
             successor = FindMin(node.Right); // right successor
-            ReduceHeight(successor);
+            ChangeHeight(successor, -1);
             //remove right successor
             parent = successor.Parent;
             if (successor.Right is not null) successor.Right.Parent = parent;
@@ -248,14 +287,13 @@ namespace BinTree
 
 
         /// <summary>
-        /// Reduce the <paramref name="Height"/> of the <paramref name="startNode"/> subtrees by one.
+        /// Change the <paramref name="Height"/> of the <paramref name="startNode"/> subtrees by <paramref name="changer"/>.
         /// </summary>
-        internal static void ReduceHeight(TreeNode<T> startNode)
+        internal static void ChangeHeight(TreeNode<T> startNode, SByte changer)
         {
             var enBFS = BFS(startNode);
-            enBFS.MoveNext();
             while (enBFS.MoveNext())
-                enBFS.Current.Height--;
+                enBFS.Current.Height += changer;
         }
 
 
