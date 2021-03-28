@@ -8,10 +8,16 @@ namespace BinTree
         public TreeNode<T> Left { get; internal set; }
         public TreeNode<T> Right { get; internal set; }
         public T Item { get; internal set; }
-        internal int Height { get; set; }
-        public override string ToString()
+        /// <summary>
+        ///Height starts counting from the Root = 0
+        /// </summary>
+        public int Height { get; internal set; }
+        public override string ToString() => Item.ToString();
+
+        internal TreeNode()
         {
-            return Item.ToString();
+
         }
+
     }
 }

@@ -16,7 +16,10 @@ namespace BinTree
 
         public bool IsReadOnly { get { return false; } }
         public bool IsSynchronized { get { return false; } }
-        public bool Balanced { get; set; }
+        /// <summary>
+        /// Returns true if the tree is a balanced AVL tree.
+        /// </summary>
+        public bool Balanced { get; }
 
 
         public object SyncRoot
@@ -31,7 +34,6 @@ namespace BinTree
 
         //exception messages
         internal const string ARGUMENT_NULL = "The argument cannot be null.";
-        internal const string ARGUMENT_NEGATIVE = "The argument cannot be negative.";
 
 
         #region ctor, Add
@@ -99,26 +101,26 @@ namespace BinTree
         #endregion
 
         #region Balancing
-        // TODO: fix change height
 
-        internal static void Balance(TreeNode<T> node)
+        internal void Balance(TreeNode<T> node)
         {
             while (node is not null)
             {
                 switch (BalanceFactor(node))
                 {
-                    case 2 when BalanceFactor(node.Left) == 1:
-                        RightRotate(node);
-                        break;
+
                     case 2 when BalanceFactor(node.Left) == -1:
                         LeftRotate(node.Left);
                         RightRotate(node);
                         break;
-                    case -2 when BalanceFactor(node.Right) == -1:
-                        LeftRotate(node);
+                    case 2:
+                        RightRotate(node);
                         break;
                     case -2 when BalanceFactor(node.Right) == 1:
                         RightRotate(node.Right);
+                        LeftRotate(node);
+                        break;
+                    case -2:
                         LeftRotate(node);
                         break;
                     default:
@@ -129,7 +131,7 @@ namespace BinTree
         }
 
         /// <summary>Left node cannot be null.</summary>
-        internal static void RightRotate(TreeNode<T> node)
+        internal void RightRotate(TreeNode<T> node)
         {
             var temp = node.Parent;
             var succesor = node.Left;
@@ -142,6 +144,7 @@ namespace BinTree
                     temp.Left = succesor;
                 else temp.Right = succesor;
             }
+            else Root = succesor;
 
             temp = succesor.Right;
             succesor.Right = node;
@@ -153,10 +156,11 @@ namespace BinTree
             node.Height++;
             ChangeHeight(node.Right, 1);
             ChangeHeight(succesor.Left, -1);
+
         }
 
         /// <summary>Right node cannot be null.</summary>
-        internal static void LeftRotate(TreeNode<T> node)
+        internal void LeftRotate(TreeNode<T> node)
         {
             var temp = node.Parent;
             var succesor = node.Right;
@@ -169,7 +173,7 @@ namespace BinTree
                     temp.Left = succesor;
                 else temp.Right = succesor;
             }
-
+            else Root = succesor;
 
             temp = succesor.Left;
             succesor.Left = node;
@@ -183,14 +187,14 @@ namespace BinTree
             ChangeHeight(succesor.Right, -1);
         }
 
-        internal static int BalanceFactor(TreeNode<T> node)
+        public int BalanceFactor(TreeNode<T> node)
         {
             int left = node.Left is null ? node.Height : MaxHeight(node.Left);
             int right = node.Right is null ? node.Height : MaxHeight(node.Right);
             return left - right;
         }
 
-        internal static int MaxHeight(TreeNode<T> node)
+        internal int MaxHeight(TreeNode<T> node)
         {
             var enBFS = BFS(node);
             int maxHeight = 0;
@@ -208,7 +212,6 @@ namespace BinTree
             node.Left = null;
             node.Right = null;
         }
-
 
         public void Clear()
         {
@@ -234,7 +237,7 @@ namespace BinTree
             if (node.Left is null && node.Right is null)
             {
                 parent = node.Parent;
-                if (parent is null) // root is leaf
+                if (parent is null) //remove root - leaf
                     Root = null;
                 else
                 {
@@ -244,6 +247,7 @@ namespace BinTree
                         parent.Right = null;
 
                     node.Parent = null;
+                    if (Balanced == true) Balance(parent);
                 }
                 return true;
             }
@@ -254,42 +258,72 @@ namespace BinTree
                 successor = node.Left is null ? node.Right : node.Left;
                 parent = node.Parent;
 
-                if (parent is null) // root one child
+                ChangeHeight(successor, -1);
+                successor.Parent = parent;
+                Invalidate(node);
+
+                if (parent is null) //remove root, one child
+                {
                     Root = successor;
+                    parent = successor;
+                }
                 else
                 {
-                    if (node.Item.CompareTo(parent.Item) < 0)
+                    if (successor.Item.CompareTo(parent.Item) < 0)
                         parent.Left = successor;
                     else
                         parent.Right = successor;
                 }
 
-                ChangeHeight(successor, -1);
-                successor.Height = node.Height;
-                successor.Parent = parent;
-                Invalidate(node);
+                if (Balanced == true)
+                    Balance(parent);
                 return true;
             }
+
 
             // two child
             successor = FindMin(node.Right); // right successor
             ChangeHeight(successor, -1);
-            //remove right successor
-            parent = successor.Parent;
-            if (successor.Right is not null) successor.Right.Parent = parent;
-            parent.Left = successor.Right;
 
-            //swap
-            node.Item = successor.Item;
-            Invalidate(successor);
+            //remove right successor connection
+            parent = successor.Parent;
+            if (successor.Right is not null)
+                successor.Right.Parent = parent;
+
+            if (node.Right.Left is null)
+            {
+                node.Right = successor.Right;
+                parent = successor;
+            }
+            else parent.Left = successor.Right;
+
+            //swap node to successor
+            var temp = node.Parent;
+            if (temp is not null)
+            {
+                if (successor.Item.CompareTo(temp.Item) < 0)
+                    temp.Left = successor;
+                else temp.Right = successor;
+            }
+            else Root = successor;
+            if (node.Right is not null) node.Right.Parent = successor;
+            if (node.Left is not null) node.Left.Parent = successor;
+            successor.Left = node.Left;
+            successor.Right = node.Right;
+            successor.Parent = node.Parent;
+            successor.Height = node.Height;
+            Invalidate(node);
+
+            if (Balanced == true)
+                Balance(parent);
             return true;
         }
 
 
         /// <summary>
-        /// Change the <paramref name="Height"/> of the <paramref name="startNode"/> subtrees by <paramref name="changer"/>.
+        /// Change the <paramref name="Height"/> of the <paramref name="startNode"/> and subtrees by <paramref name="changer"/>.
         /// </summary>
-        internal static void ChangeHeight(TreeNode<T> startNode, SByte changer)
+        internal void ChangeHeight(TreeNode<T> startNode, SByte changer)
         {
             var enBFS = BFS(startNode);
             while (enBFS.MoveNext())
@@ -314,10 +348,16 @@ namespace BinTree
             return startNode;
         }
 
+        /// <summary>
+        /// Returns the maximum item in the tree.
+        /// </summary>
         public T Min()
         {
             return Root is null ? default : FindMin(Root).Item;
         }
+        /// <summary>
+        /// Returns the minimum item in the tree.
+        /// </summary>
         public T Max()
         {
             return Root is null ? default : FindMax(Root).Item;
@@ -345,11 +385,11 @@ namespace BinTree
 
         /// <summary>Root start.</summary>
         public IEnumerator<TreeNode<T>> BFS() => BFS(Root);
-        public static IEnumerator<TreeNode<T>> BFS(TreeNode<T> node)
+        public IEnumerator<TreeNode<T>> BFS(TreeNode<T> startNode)
         {
             Queue<TreeNode<T>> queue = new();
             TreeNode<T> temp;
-            if (node is not null) queue.Enqueue(node);
+            if (startNode is not null) queue.Enqueue(startNode);
             while (queue.Count > 0)
             {
                 temp = queue.Dequeue();
@@ -364,11 +404,11 @@ namespace BinTree
         public IEnumerator<TreeNode<T>> DFS() => DFS(Root);
 
         /// <summary>LNR</summary>
-        public static IEnumerator<TreeNode<T>> DFS(TreeNode<T> node)
+        public IEnumerator<TreeNode<T>> DFS(TreeNode<T> startNode)
         {
             Stack<TreeNode<T>> stack = new();
             TreeNode<T> temp;
-            if (node is not null) stack.Push(node);
+            if (startNode is not null) stack.Push(startNode);
             bool leftPush = true;
             while (stack.Count > 0)
             {
@@ -444,7 +484,7 @@ namespace BinTree
         /// <param name="LNR">Binary tree traversal (left number right)</param>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public static void Print(IEnumerator<TreeNode<T>> LNR, byte lineSpace, byte nodeSpace)
+        public static void Print(IEnumerator<TreeNode<T>> LNR, byte lineSpace, byte nodeSpace, bool showHeight)
         {
 
             var startPos = Console.GetCursorPosition();
@@ -516,6 +556,8 @@ namespace BinTree
 
 
                 string str = "{" + LNR.Current.ToString() + "}";
+                if (showHeight) str = str + " H:" + LNR.Current.Height;
+
                 if (maxStr < str.Length) maxStr = str.Length;
 
 
@@ -535,13 +577,13 @@ namespace BinTree
         /// </summary>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public void Print(byte lineSpace = 1, byte nodeSpace = 1) => Print(DFS(Root), lineSpace, nodeSpace);
+        public void Print(byte lineSpace = 1, byte nodeSpace = 1, bool showHeight = false) => Print(DFS(Root), lineSpace, nodeSpace, showHeight);
         /// <summary>
         /// Draw a tree starting from this <paramref name="node"/>
         /// </summary>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public void Print(TreeNode<T> node, byte lineSpace = 1, byte nodeSpace = 1) => Print(DFS(node), lineSpace, nodeSpace);
+        public void Print(TreeNode<T> node, byte lineSpace = 1, byte nodeSpace = 1, bool showHeight = false) => Print(DFS(node), lineSpace, nodeSpace, showHeight);
         #endregion
     }
 }
