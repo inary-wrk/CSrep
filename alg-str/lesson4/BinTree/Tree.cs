@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("BinTree.Tests")]
 namespace BinTree
 {
-    using System.Collections;
-
+    /// <summary>
+    /// A binary tree. Can be a balanced AVL tree depending on the parameter <seealso cref="Balanced"/>
+    /// </summary>
     public class Tree<T> : ICollection<T>, ICollection
         where T : IComparable<T>, IEquatable<T>
     {
@@ -16,11 +20,11 @@ namespace BinTree
 
         public bool IsReadOnly { get { return false; } }
         public bool IsSynchronized { get { return false; } }
-        /// <summary>
-        /// Returns true if the tree is a balanced AVL tree.
-        /// </summary>
-        public bool Balanced { get; }
-
+        /// <value>true - if the tree is a balanced AVL tree</value>
+        public bool Balanced { get; private set; }
+        //exception messages
+        internal const string ARGUMENT_NULL = "The argument cannot be null.";
+        internal const string TREE_NOT_CONTAIN_NODE = "The tree does not contain this node.";
 
         public object SyncRoot
         {
@@ -32,9 +36,6 @@ namespace BinTree
             }
         }
 
-        //exception messages
-        internal const string ARGUMENT_NULL = "The argument cannot be null.";
-
 
         #region ctor, Add
 
@@ -44,11 +45,11 @@ namespace BinTree
 
         public Tree(IEnumerable<T> collection, bool balanced = false)
         {
+            if (collection is null) throw new ArgumentNullException(nameof(collection), ARGUMENT_NULL);
             Balanced = balanced;
-            if (collection is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("collection"));
-            var en = collection.GetEnumerator();
-            while (en.MoveNext())
-                Add(en.Current);
+
+            foreach (var item in collection)
+                Add(item);
         }
 
         public Tree(params T[] item) : this(false, item)
@@ -64,10 +65,10 @@ namespace BinTree
 
         public void Add(T item)
         {
-            if (item is null) throw new ArgumentNullException(ARGUMENT_NULL, new NullReferenceException("item"));
+            if (item is null) throw new ArgumentNullException(nameof(item), ARGUMENT_NULL);
             //add root
             if (Root is null)
-                Root = new TreeNode<T> { Item = item, Height = 0 };
+                Root = new TreeNode<T> { Item = item, Height = 0, TreeLink = this };
             else
             {
                 var temp = Root;
@@ -79,7 +80,7 @@ namespace BinTree
                     {
                         if (temp.Left is null)
                         {
-                            temp.Left = new TreeNode<T> { Item = item, Parent = temp, Height = temp.Height + 1 };
+                            temp.Left = new TreeNode<T> { Item = item, Parent = temp, Height = temp.Height + 1, TreeLink = this };
                             break;
                         }
                         else temp = temp.Left;
@@ -88,7 +89,7 @@ namespace BinTree
                     {
                         if (temp.Right is null)
                         {
-                            temp.Right = new TreeNode<T> { Item = item, Parent = temp, Height = temp.Height + 1 };
+                            temp.Right = new TreeNode<T> { Item = item, Parent = temp, Height = temp.Height + 1, TreeLink = this };
                             break;
                         }
                         else temp = temp.Right;
@@ -100,7 +101,34 @@ namespace BinTree
         }
         #endregion
 
+        #region Utility
+        /// <summary>
+        /// Change the <paramref name="Height"/> of the <paramref name="startNode"/> and subtrees by <paramref name="changer"/>.
+        /// </summary>
+        internal void ChangeHeight(TreeNode<T> startNode, SByte changer)
+        {
+            if (startNode is null) return;
+
+            var enBFS = BFS(startNode);
+            while (enBFS.MoveNext())
+                enBFS.Current.Height += changer;
+        }
+
+        internal void ValidateNode(TreeNode<T> node, string argName)
+        {
+            if (node is null) throw new ArgumentNullException(argName, ARGUMENT_NULL);
+
+            if (node.TreeLink != this) throw new InvalidOperationException(TREE_NOT_CONTAIN_NODE);
+        }
+
+
+        #endregion
+
         #region Balancing
+        public void DisableBalancing()
+        {
+            if (Balanced) Balanced = false;
+        }
 
         internal void Balance(TreeNode<T> node)
         {
@@ -187,7 +215,7 @@ namespace BinTree
             ChangeHeight(succesor.Right, -1);
         }
 
-        public int BalanceFactor(TreeNode<T> node)
+        internal int BalanceFactor(TreeNode<T> node)
         {
             int left = node.Left is null ? node.Height : MaxHeight(node.Left);
             int right = node.Right is null ? node.Height : MaxHeight(node.Right);
@@ -205,14 +233,6 @@ namespace BinTree
         #endregion
 
         #region Remove
-        internal static void Invalidate(TreeNode<T> node)
-        {
-            if (node is null) return;
-            node.Parent = null;
-            node.Left = null;
-            node.Right = null;
-        }
-
         public void Clear()
         {
             var enBFS = BFS();
@@ -227,7 +247,7 @@ namespace BinTree
 
         public bool Remove(TreeNode<T> node)
         {
-            if (node is null) return false;
+            if (node is null || node.TreeLink != this) return false;
             Count--;
 
             TreeNode<T> successor;
@@ -249,8 +269,10 @@ namespace BinTree
                     node.Parent = null;
                     if (Balanced == true) Balance(parent);
                 }
+                node.TreeLink = null;
                 return true;
             }
+
 
             // one child
             if (node.Left is null || node.Right is null)
@@ -319,18 +341,14 @@ namespace BinTree
             return true;
         }
 
-
-        /// <summary>
-        /// Change the <paramref name="Height"/> of the <paramref name="startNode"/> and subtrees by <paramref name="changer"/>.
-        /// </summary>
-        internal void ChangeHeight(TreeNode<T> startNode, SByte changer)
+        internal static void Invalidate(TreeNode<T> node)
         {
-            var enBFS = BFS(startNode);
-            while (enBFS.MoveNext())
-                enBFS.Current.Height += changer;
+            if (node is null) return;
+            node.Parent = null;
+            node.Left = null;
+            node.Right = null;
+            node.TreeLink = null;
         }
-
-
         #endregion
 
         #region Search
@@ -349,14 +367,14 @@ namespace BinTree
         }
 
         /// <summary>
-        /// Returns the maximum item in the tree.
+        /// Returns the minimum item in the tree.
         /// </summary>
         public T Min()
         {
             return Root is null ? default : FindMin(Root).Item;
         }
         /// <summary>
-        /// Returns the minimum item in the tree.
+        /// Returns the maximum item in the tree.
         /// </summary>
         public T Max()
         {
@@ -387,6 +405,8 @@ namespace BinTree
         public IEnumerator<TreeNode<T>> BFS() => BFS(Root);
         public IEnumerator<TreeNode<T>> BFS(TreeNode<T> startNode)
         {
+            if (startNode is not null && startNode.TreeLink != this) throw new InvalidOperationException(TREE_NOT_CONTAIN_NODE);
+
             Queue<TreeNode<T>> queue = new();
             TreeNode<T> temp;
             if (startNode is not null) queue.Enqueue(startNode);
@@ -406,6 +426,8 @@ namespace BinTree
         /// <summary>LNR</summary>
         public IEnumerator<TreeNode<T>> DFS(TreeNode<T> startNode)
         {
+            if (startNode is not null && startNode.TreeLink != this) throw new InvalidOperationException(TREE_NOT_CONTAIN_NODE);
+
             Stack<TreeNode<T>> stack = new();
             TreeNode<T> temp;
             if (startNode is not null) stack.Push(startNode);
@@ -484,8 +506,10 @@ namespace BinTree
         /// <param name="LNR">Binary tree traversal (left number right)</param>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
+        /// <exception cref="ArgumentNullException">Throw when <paramref name="LNR"/> is null.</exception>
         public static void Print(IEnumerator<TreeNode<T>> LNR, byte lineSpace, byte nodeSpace, bool showHeight)
         {
+            if (LNR is null) throw new ArgumentNullException(nameof(LNR), ARGUMENT_NULL);
 
             var startPos = Console.GetCursorPosition();
             lineSpace++;
@@ -520,7 +544,6 @@ namespace BinTree
                         Console.Write('─');
                         prevleft++;
                     }
-
                     Console.Write('┐');
 
                     while (prevTop < top)
@@ -535,7 +558,6 @@ namespace BinTree
                 }
                 else
                 {
-
                     if (!ReferenceEquals(temp, LNR.Current.Left))
                         for (int i = 1; i < temp.Height - LNR.Current.Height; i++)
                         {
@@ -554,18 +576,15 @@ namespace BinTree
                     Console.ResetColor();
                 }
 
-
                 string str = "{" + LNR.Current.ToString() + "}";
-                if (showHeight) str = str + " H:" + LNR.Current.Height;
+                if (showHeight) str = str + "H:" + LNR.Current.Height;
 
                 if (maxStr < str.Length) maxStr = str.Length;
-
-
                 if (Console.BufferWidth <= indent + str.Length) Console.BufferWidth = indent + str.Length + 10;
-
 
                 Console.SetCursorPosition(stackidnt.Peek(), top);
                 Console.Write(str);
+
                 temp = LNR.Current;
                 prevTop = top;
                 prevStrLenght = str.Length;
@@ -579,11 +598,18 @@ namespace BinTree
         /// <param name="nodeSpace">Interval between tree nodes.</param>
         public void Print(byte lineSpace = 1, byte nodeSpace = 1, bool showHeight = false) => Print(DFS(Root), lineSpace, nodeSpace, showHeight);
         /// <summary>
-        /// Draw a tree starting from this <paramref name="node"/>
+        /// Draw a tree starting from this <paramref name="startNode"/>
         /// </summary>
         /// <param name="lineSpace">Line spacing.</param>
         /// <param name="nodeSpace">Interval between tree nodes.</param>
-        public void Print(TreeNode<T> node, byte lineSpace = 1, byte nodeSpace = 1, bool showHeight = false) => Print(DFS(node), lineSpace, nodeSpace, showHeight);
+        /// <exception cref="ArgumentNullException">Throw when <paramref name="startNode"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Throw when tree doesn't contain <paramref name="startNode"/>.</exception>
+        public void Print(TreeNode<T> startNode, byte lineSpace = 1, byte nodeSpace = 1, bool showHeight = false)
+        {
+            ValidateNode(startNode, nameof(startNode));
+            Print(DFS(startNode), lineSpace, nodeSpace, showHeight);
+        }
+
         #endregion
     }
 }
