@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+	  <PackageId>BinTree</PackageId>
+	  <Version>1.0.0</Version>
+	  <Authors>inary-wrk</Authors>
+	  <Company>inary-wrk</Company>
+	  <RepositoryUrl>https://github.com/inary-wrk/CSrep</RepositoryUrl>
+	  <PackageDescription>AVL Tree lib</PackageDescription>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
