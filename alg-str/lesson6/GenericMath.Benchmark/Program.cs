@@ -5,7 +5,7 @@ using BenchmarkDotNet.Running;
 
 
 /*
-|            Method |  length |            Mean |         Error |        StdDev |            Median |
+|            Method |  count  |            Mean |         Error |        StdDev |            Median |
 |------------------ |-------- |----------------:|--------------:|--------------:|------------------:|
 |    Add_NotGeneric |       1 |        67.00 ns |     18.704 ns |     55.149 ns |       100.0000 ns |
 |   Add_GenericMath |       1 |       148.00 ns |     19.569 ns |     57.700 ns |       100.0000 ns |
@@ -84,7 +84,7 @@ namespace GenericMathBenchmark
     public class Benchmark
     {
         [Params(1, 10, 100, 10000, 1_000_000)]
-        public int length;
+        public int count;
 
         static Random rnd = new();
 
@@ -94,8 +94,8 @@ namespace GenericMathBenchmark
         [IterationSetup]
         public void ISetUp()
         {
-            genMy = new GenMy<int>[length];
-            my = new My[length];
+            genMy = new GenMy<int>[count];
+            my = new My[count];
             for (int i = 0; i < genMy.Length; i++)
             {
                 var x1 = rnd.Int();

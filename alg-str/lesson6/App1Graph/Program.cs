@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using MyGraph;
+
 namespace App1Graph
 {
-    class test
+    class test<T>
+       where T: struct, IComparable
     {
-      public  static int[] x = new int[10];
+        public int? MyProperty { get; set; }
+        public  static int[] x = new int[10];
+
+        public static void DefaultT(T? item)
+        {
+            if (item.Value.CompareTo(default(T)) == 0) Console.WriteLine("default");
+            else Console.WriteLine("not default");
+        }
     }
+
+
     class Program
     {
-        static void TEstM<T>(ICollection<T> col)
-        {
-            var en = col.GetEnumerator();
-            while (en.MoveNext())
-            {
-                Console.WriteLine(en.Current);
-            }
-        }
 
         static void Main(string[] args)
         {
-            var en = test.x.GetEnumerator();
-            en.MoveNext();
-            TEstM(test.x);
-            Console.WriteLine("Hello World!");
+
+            var x = new Dictionary<int, string>();
+           
         }
     }
 }
